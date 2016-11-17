@@ -9,7 +9,7 @@
 	   java -jar mcmd-java-1.0.0-SNAPSHOT-jar-with-dependencies.jar -p "mcmd1/work1;mcmd1/work2" ( -m "filename=data;filename2=data2" -c "mcmd.json" -l "logback.xml" ) 
 ```
 
-# configuration file
+# Configuration file
 You can define commands which you want to run sequentially.
 
 ```
@@ -42,6 +42,7 @@ You can define commands which you want to run sequentially.
 		}
 	}
 }
+```
 
 # Use in Java
 ```

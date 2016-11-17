@@ -12,7 +12,7 @@
 	   
 ```
 
-# configuration file
+# Configuration file
 You can define commands which you want to run sequentially.
 
 ```
@@ -45,6 +45,7 @@ You can define commands which you want to run sequentially.
 		}
 	}
 }
+```
 
 # Use in Golang
 ```
