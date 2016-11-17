@@ -26,7 +26,7 @@ public class Mcmd {
     private Gson gson;
     private JsonObject conf = null;
 
-    public Mcmd(String configFile) {
+    public Mcmd(String configFile) throws Exception {
         gson = new Gson();
         final Reader reader = ConfigUtil.getFileReader(configFile);
         try {
@@ -35,6 +35,7 @@ public class Mcmd {
             e.printStackTrace();
             log.error(e.getMessage());
             Runtime.getRuntime().exit(1);
+            throw new Exception(e.getMessage());
         } finally {
             if (reader != null) {
                 try {
@@ -42,12 +43,13 @@ public class Mcmd {
                 } catch (IOException e) {
                     log.error(e.getMessage());
                     e.printStackTrace();
+                    throw new Exception(e.getMessage());
                 }
             }
         }
     }
 
-    public StringBuffer exec(String arg, Map<String, Object> var) {
+    public StringBuffer exec(String arg, Map<String, Object> var) throws Exception {
         try {
             List<String> commands = new ArrayList<String>();
 
@@ -99,6 +101,7 @@ public class Mcmd {
         } catch (final Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());
+            throw new Exception(e.getMessage());
         }
         return null;
     }
@@ -121,6 +124,16 @@ public class Mcmd {
      * "mcmd.json\" -l \"logback.xml\" -p \"kali_aws/work1;kali_aws/work2\" -m \"filename=data;filename2=data2\"
      */
     public static void main(String[] args) throws Exception {
+
+//         Mcmd mcmd2 = new Mcmd("mcmd.json");
+//         Map<String, Object> var2 = new HashMap<String, Object>();
+//         var2.put("domain", "topzone.biz");
+//        
+//        // String stdout = mcmd2.exec("kali_aws/work1", var2).toString();
+//        // log.debug(stdout);
+//         String stdout2 = mcmd2.exec("kali_aws/work2", var2).toString();
+//         log.debug(stdout2);
+
         String configFile = "mcmd.json";
         String logConfigFile = "logback.xml";
         String commandPaths = null;
@@ -150,7 +163,7 @@ public class Mcmd {
         if (commandPaths == null) {
             log.error(
                     "No command-path! ex) Mcmd -c \"mcmd.json\" -l \"logback.xml\" -p \"kali_aws/work1;kali_aws/work2\" -m \"filename=data;filename2=data2\"");
-            return;
+            throw new Exception("No command-path!");
         } else {
             String cmds[] = commandPaths.split(";");
             for (String cmd : cmds) {
@@ -169,11 +182,6 @@ public class Mcmd {
             mcmd.exec(commandPah, var).toString();
             // log.debug(stdout);
         }
-
-        // String stdout = mcmd.exec("kali_aws/work1", var).toString();
-        // log.debug(stdout);
-        // String stdout2 = mcmd.exec("kali_aws/work2", var).toString();
-        // log.debug(stdout2);
 
         // String stdout = mcmd.exec("mcmd1/work1", var).toString();
         // log.debug(stdout);

@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class McmdTest {
 
-    public static void main(String[] arg) {
+    public static void main(String[] arg) throws Exception {
         Mcmd mcmd = new Mcmd("mcmd.json");
         Map<String, Object> var = new HashMap<String, Object>();
         var.put("filename", "aaa");

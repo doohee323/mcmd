@@ -6,12 +6,17 @@ import java.io.InputStreamReader;
 import java.io.SequenceInputStream;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * </pre>
  * 
  * @version 1.0
  */
 public class CmdUtil {
+
+    static final Logger log = LoggerFactory.getLogger(CmdUtil.class);
 
     /**
      * <pre>
@@ -23,13 +28,13 @@ public class CmdUtil {
      */
     public static void cmd(Map<String, String> input) throws Exception {
         String command = input.get("command").toString();
-        System.out.println("shell command:" + command);
+        log.debug("shell command:" + command);
 
         try {
             Runtime rt = Runtime.getRuntime();
             rt.exec(command);
         } catch (Exception e) {
-            System.out.println("shell return1 :" + e.getMessage());
+            log.error("shell return1 :" + e.getMessage());
             throw new Exception("shell command error 1!!!:" + command);
         }
     }
@@ -44,7 +49,7 @@ public class CmdUtil {
      * @throws Exception
      */
     public static StringBuffer cmd(String command) throws Exception {
-        System.out.println("shell command:" + command);
+        log.debug("shell command:" + command);
 
         StringBuffer strReturn = new StringBuffer();
         Runtime rt = Runtime.getRuntime();
@@ -53,7 +58,7 @@ public class CmdUtil {
             ps = rt.exec(command);
             ps.waitFor();
         } catch (Exception e) {
-            System.out.println("shell return1 :" + e.getMessage());
+            log.error("shell return1 :" + e.getMessage());
             throw new Exception("shell command error 1!!!:" + command);
         }
 
@@ -66,10 +71,10 @@ public class CmdUtil {
                     strReturn.append(readLine).append("\n");
                 }
             } catch (IOException e) {
-                System.out.println("shell return2 :" + e.getMessage());
+                log.error("shell return2 :" + e.getMessage());
                 throw new Exception("shell command error 2!!!:" + command);
             }
-            System.out.println("shell return :" + strReturn);
+            log.debug("shell return :" + strReturn);
         }
         return strReturn;
     }

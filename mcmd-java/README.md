@@ -7,6 +7,7 @@
 		mvn clean compile package
 	3. run 
 	   java -jar mcmd-java-1.0.0-SNAPSHOT-jar-with-dependencies.jar -p "mcmd1/work1;mcmd1/work2" ( -m "filename=data;filename2=data2" -c "mcmd.json" -l "logback.xml" ) 
+	   java -jar mcmd-java-1.0.0-SNAPSHOT-jar-with-dependencies.jar -p "kali_aws/work1;kali_aws/work2" -m "company=Topzone;domain=topzone.biz" -c "/Users/dhong/Documents/workspace/etc/mcmd/mcmd-java/src/main/resources/mcmd.json" -l "/Users/dhong/Documents/workspace/etc/mcmd/mcmd-java/src/main/resources/logback.xml" 
 ```
 
 # Configuration file

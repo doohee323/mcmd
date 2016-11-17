@@ -48,9 +48,9 @@
 				"_WAIT 'Choice:'",
 				"1",
 				"_WAIT 'Company:'",
-				"Topzone",
+				"{{company}}",
 				"_WAIT 'Domain:'",
-				"topzone.biz",
+				"{{domain}}",
 				"_WAIT 'Scan complete.'",
 				"_FINISH"
 			]
@@ -58,7 +58,8 @@
 		"work2": {
 			"type": "shell",
 			"commands": [
-				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/topzone.biz/{{filename}}.db ."
+				"sqlite3 /root/.recon-ng/workspaces/{{domain}}/data.db .dump .quit > {{domain}}.sql",
+				"scp -i {{keyfile}} {{username}}@{{host}}:/home/ec2-user/{{domain}}.sql ."
 			]
 		}
 	}

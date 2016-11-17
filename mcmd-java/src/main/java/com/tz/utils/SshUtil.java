@@ -27,7 +27,7 @@ public class SshUtil {
     public int intervalBtw = 500;
     public int intervalWait = 2000;
 
-    public StringBuffer cmd(JsonObject hostInfo, List<String> commands) {
+    public StringBuffer cmd(JsonObject hostInfo, List<String> commands) throws Exception {
         StringBuffer result = new StringBuffer();
         Channel channel = null;
         Session session = null;
@@ -90,6 +90,7 @@ public class SshUtil {
         } catch (Exception e) {
             e.printStackTrace();
             log.error("ERROR: Connecting via shell to " + e.getMessage());
+            throw new Exception(e.getMessage());
         } finally {
             channel.disconnect();
             session.disconnect();
@@ -100,6 +101,7 @@ public class SshUtil {
             } catch (IOException e) {
                 e.printStackTrace();
                 log.error(e.getMessage());
+                throw new Exception(e.getMessage());
             }
         }
         return new StringBuffer(result);
@@ -116,11 +118,11 @@ public class SshUtil {
                 bGo = false;
             }
             String showStr = result.substring(curSize, result.length()).trim();
-            if(!showStr.equals("")) {
+            if (!showStr.equals("")) {
                 log.debug(showStr);
             }
             if (showStr.indexOf(offset) > -1) {
-                log.debug("////////////////////// command finished with :" + offset);
+                log.debug("// command finished with :" + offset);
                 bGo = false;
             }
             curSize = result.length();
@@ -129,7 +131,7 @@ public class SshUtil {
         return curSize;
     }
 
-    public void cmd(JsonObject hostInfo, String command) {
+    public void cmd(JsonObject hostInfo, String command) throws Exception {
         String username = hostInfo.get("username").getAsString();
         String host = hostInfo.get("host").getAsString();
         String keyfile = hostInfo.get("keyfile").getAsString();
@@ -184,13 +186,15 @@ public class SshUtil {
                 }
                 try {
                     Thread.sleep(intervalBtw);
-                } catch (Exception ee) {
-                    log.error(ee.getMessage());
+                } catch (Exception e) {
+                    log.error(e.getMessage());
+                    throw new Exception(e.getMessage());
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage());
+            throw new Exception(e.getMessage());
         } finally {
             try {
                 channel.disconnect();
@@ -198,6 +202,7 @@ public class SshUtil {
                 fos.close();
             } catch (IOException e) {
                 e.printStackTrace();
+                throw new Exception(e.getMessage());
             }
         }
     }
@@ -219,7 +224,11 @@ public class SshUtil {
         commands.add("ls -al");
 
         SshUtil util = new SshUtil();
-        util.cmd(hostInfo, commands);
+        try {
+            util.cmd(hostInfo, commands);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

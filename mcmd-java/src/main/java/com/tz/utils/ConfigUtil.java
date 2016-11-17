@@ -30,18 +30,19 @@ public final class ConfigUtil {
 
     public static String defaultConfDir = "./target/classes/";
 
-    public static Reader getFileReader(String fileNm) {
+    public static Reader getFileReader(String fileNm) throws Exception {
         Reader reader = null;
         try {
             reader = new InputStreamReader(getFileInputStream(fileNm));
         } catch (final Exception e) {
             e.printStackTrace();
             log.error("error: " + e.getMessage());
+            throw new Exception(e.getMessage());
         }
         return reader;
     }
 
-    public static InputStream getFileInputStream(String fileNm) {
+    public static InputStream getFileInputStream(String fileNm) throws Exception {
         try {
             if (new File(fileNm).exists()) {
                 return new FileInputStream(fileNm);
@@ -53,11 +54,11 @@ public final class ConfigUtil {
         } catch (final FileNotFoundException e) {
             e.printStackTrace();
             log.error("error: " + e.getMessage());
+            throw new Exception(e.getMessage());
         }
-        return null;
     }
 
-    public static String getConfPath(String fileNm) {
+    public static String getConfPath(String fileNm) throws Exception {
         try {
             if (new File(fileNm).exists()) {
                 return fileNm;
@@ -69,11 +70,11 @@ public final class ConfigUtil {
         } catch (final Exception e) {
             e.printStackTrace();
             log.error("error: " + e.getMessage());
+            throw new Exception(e.getMessage());
         }
-        return null;
     }
 
-    public static Properties getJsonProperty(String fileNm) {
+    public static Properties getJsonProperty(String fileNm) throws Exception {
         final Properties appProperty = new Properties();
         Reader reader = null;
         try {
@@ -82,12 +83,14 @@ public final class ConfigUtil {
             loadJson(appProperty, "", json);
         } catch (final Exception e) {
             e.printStackTrace();
+            throw new Exception(e.getMessage());
         } finally {
             try {
                 reader.close();
             } catch (final IOException e) {
                 e.printStackTrace();
                 log.error("error: " + e.getMessage());
+                throw new Exception(e.getMessage());
             }
         }
         return appProperty;
@@ -104,7 +107,7 @@ public final class ConfigUtil {
         }
     }
 
-    public static Properties getProperty(String fileNm) {
+    public static Properties getProperty(String fileNm) throws Exception {
         final Properties appProperty = new Properties();
         try {
             final Properties props = new Properties();
@@ -117,11 +120,12 @@ public final class ConfigUtil {
         } catch (final Exception e) {
             e.printStackTrace();
             log.error("error: " + e.getMessage());
+            throw new Exception(e.getMessage());
         }
         return appProperty;
     }
 
-    public static Properties getProperties(String fileNm, String ext) {
+    public static Properties getProperties(String fileNm, String ext) throws Exception {
         final Properties appProperties = new Properties();
         try {
             final File file = new File(getConfPath(fileNm));
@@ -140,17 +144,18 @@ public final class ConfigUtil {
         } catch (final Exception e) {
             e.printStackTrace();
             log.error("error: " + e.getMessage());
+            throw new Exception(e.getMessage());
         }
         return appProperties;
     }
 
-    public static Properties getProperties(String path) {
+    public static Properties getProperties(String path) throws Exception {
         return getProperties(path, "conf");
     }
 
     static String version = null;
 
-    public static String getVersion(String filePath) {
+    public static String getVersion(String filePath) throws Exception {
         try {
             final Reader reader = getFileReader(filePath);
             try {
@@ -168,20 +173,21 @@ public final class ConfigUtil {
         } catch (final Exception e) {
             e.printStackTrace();
             log.error("error: " + e.getMessage());
+            throw new Exception(e.getMessage());
         }
-        return version;
     }
 
-    public static void setLogbackConfig(String filePath) {
+    public static void setLogbackConfig(String filePath) throws Exception {
         final LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         try {
             final JoranConfigurator configurator = new JoranConfigurator();
             configurator.setContext(context);
             context.reset();
             configurator.doConfigure(ConfigUtil.getConfPath(filePath));
-        } catch (final JoranException je) {
-            je.printStackTrace();
-            log.error("error: " + je.getMessage());
+        } catch (final JoranException e) {
+            e.printStackTrace();
+            log.error("error: " + e.getMessage());
+            throw new Exception(e.getMessage());
         }
         StatusPrinter.printInCaseOfErrorsOrWarnings(context);
     }
