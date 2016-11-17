@@ -1,4 +1,4 @@
-# Multiple command on ssh
+# Multiple command on ssh / telnet / shell
 
 # Usage
 ```
