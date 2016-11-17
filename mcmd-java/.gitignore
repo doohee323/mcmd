@@ -1,0 +1,21 @@
+# build dirs
+dist
+
+# Java class files
+*.class
+
+# generated files
+bin/
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/
+
+*.log
+logs/
+
+.settings
+/data.db

@@ -1,0 +1,65 @@
+{
+	"config": {
+		"maxWait": 40,
+		"intervalBtw": 1000,
+		"intervalWait": 2000
+	},
+	"mcmd1": {
+		"hostInfo": {
+			"host": "topzone.biz",
+			"port": 22,
+			"username": "ubuntu",
+			"keyfile": "/Users/dhong/.ssh/topzone_ca1.pem"
+		},
+		"work1": {
+			"type": "ssh",
+			"commands": [
+				"cd /home/ubuntu",
+				"rm -Rf {{filename}}.tar",
+				"rm -Rf {{filename}}.tar_bak",
+				"tar cvf {{filename}}.tar *",
+				"_WAIT ':~$",
+				"_SLEEP 3",
+				"mv {{filename}}.tar {{filename}}.tar_bak",
+				"_FINISH"
+			]
+		},
+		"work2": {
+			"type": "shell",
+			"commands": [
+				"scp -i {{keyfile}} {{username}}@{{host}}:/home/ubuntu/{{filename}}.tar_bak ."
+			]
+		}
+	},
+	"kali_aws": {
+		"hostInfo": {
+			"host": "54.183.204.226",
+			"port": 22,
+			"username": "ec2-user",
+			"keyfile": "/Users/dhong/.ssh/topzone_ca1.pem"
+		},
+		"work1": {
+			"type": "ssh",
+			"commands": [
+				"cd /opt/discover",
+				"sudo bash discover.sh",
+				"_WAIT 'Choice:'",
+				"1",
+				"_WAIT 'Choice:'",
+				"1",
+				"_WAIT 'Company:'",
+				"Topzone",
+				"_WAIT 'Domain:'",
+				"topzone.biz",
+				"_WAIT 'Scan complete.'",
+				"_FINISH"
+			]
+		},
+		"work2": {
+			"type": "shell",
+			"commands": [
+				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/topzone.biz/{{filename}}.db ."
+			]
+		}
+	}
+}

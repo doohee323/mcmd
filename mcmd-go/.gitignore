@@ -1,0 +1,11 @@
+/.settings/
+/bin/
+/logs/
+/vendor/
+/glide.lock
+
+# Mac
+.DS_Store
+
+*.log
+logs/

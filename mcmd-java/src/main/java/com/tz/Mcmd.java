@@ -1,0 +1,184 @@
+package com.tz;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.tz.utils.CmdUtil;
+import com.tz.utils.ConfigUtil;
+import com.tz.utils.SshUtil;
+import com.tz.utils.TelnetUtil;
+
+public class Mcmd {
+
+    static final Logger log = LoggerFactory.getLogger(Mcmd.class);
+
+    private Gson gson;
+    private JsonObject conf = null;
+
+    public Mcmd(String configFile) {
+        gson = new Gson();
+        final Reader reader = ConfigUtil.getFileReader(configFile);
+        try {
+            conf = gson.fromJson(reader, JsonObject.class);
+        } catch (final Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+            Runtime.getRuntime().exit(1);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    log.error(e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public StringBuffer exec(String arg, Map<String, Object> var) {
+        try {
+            List<String> commands = new ArrayList<String>();
+
+            String configStr = conf.get("config").toString();
+            JsonObject config = gson.fromJson(configStr, JsonObject.class);
+
+            String path[] = arg.split("/");
+            String mcmd1 = conf.get(path[0]).toString();
+            JsonObject mcmd1Obj = gson.fromJson(mcmd1, JsonObject.class);
+
+            JsonObject hostInfo = gson.fromJson(mcmd1Obj.get("hostInfo").toString(), JsonObject.class);
+
+            String work = mcmd1Obj.get(path[1]).toString();
+            JsonObject workObj = gson.fromJson(work, JsonObject.class);
+
+            String type = workObj.get("type").getAsString();
+            String commandstr1 = workObj.get("commands").toString();
+            JsonArray mCommand = gson.fromJson(commandstr1, JsonArray.class);
+
+            Map<String, Object> _hostInfo = new HashMap<String, Object>();
+            for (Map.Entry<String, JsonElement> entry : hostInfo.entrySet()) {
+                String key = entry.getKey();
+                JsonElement v = entry.getValue();
+                _hostInfo.put(key, v.getAsString());
+            }
+            for (int j = 0; j < mCommand.size(); j++) {
+                String cmd = mCommand.get(j).getAsString();
+                cmd = replaceVariables(cmd, _hostInfo);
+                cmd = replaceVariables(cmd, var);
+                commands.add(cmd);
+            }
+
+            if (type.equals("ssh")) {
+                SshUtil util = new SshUtil();
+                util.maxWait = config.get("maxWait").getAsInt();
+                util.intervalBtw = config.get("intervalBtw").getAsInt();
+                util.intervalWait = config.get("intervalWait").getAsInt();
+                return util.cmd(hostInfo, commands);
+            } else if (type.equals("telnet")) {
+                TelnetUtil util = new TelnetUtil();
+                util.cmd(null);
+            } else { // shell
+                StringBuffer sb = new StringBuffer();
+                for (int j = 0; j < commands.size(); j++) {
+                    sb.append(CmdUtil.cmd(commands.get(j).toString()));
+                }
+                return sb;
+            }
+        } catch (final Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+        }
+        return null;
+    }
+
+    public String replaceVariables(String orgStr, Map<String, Object> param) {
+        for (Map.Entry<String, Object> entry : param.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            if (value instanceof String) {
+                orgStr = orgStr.replace("{{" + key + "}}", value.toString());
+            } else {
+                orgStr = orgStr.replace("\"{{" + key + "}}\"", value.toString());
+            }
+        }
+        return orgStr;
+    }
+
+    /*
+     * Mcmd -c \
+     * "mcmd.json\" -l \"logback.xml\" -p \"kali_aws/work1;kali_aws/work2\" -m \"filename=data;filename2=data2\"
+     */
+    public static void main(String[] args) throws Exception {
+        String configFile = "mcmd.json";
+        String logConfigFile = "logback.xml";
+        String commandPaths = null;
+        String mappings = null;
+
+        for (int i = 0; i < args.length; i++) {
+            if (args[i].trim().equals("-c")) {
+                configFile = args[i + 1];
+                i++;
+            } else if (args[i].trim().equals("-l")) {
+                logConfigFile = args[i + 1];
+                i++;
+            } else if (args[i].trim().equals("-p")) {
+                commandPaths = args[i + 1];
+                i++;
+            } else if (args[i].trim().equals("-m")) {
+                mappings = args[i + 1];
+                i++;
+            }
+        }
+
+        ConfigUtil.setLogbackConfig(logConfigFile);
+
+        Mcmd mcmd = new Mcmd(configFile);
+
+        List<String> commandArry = new ArrayList<String>();
+        if (commandPaths == null) {
+            log.error(
+                    "No command-path! ex) Mcmd -c \"mcmd.json\" -l \"logback.xml\" -p \"kali_aws/work1;kali_aws/work2\" -m \"filename=data;filename2=data2\"");
+            return;
+        } else {
+            String cmds[] = commandPaths.split(";");
+            for (String cmd : cmds) {
+                commandArry.add(cmd);
+            }
+        }
+        Map<String, Object> var = new HashMap<String, Object>();
+        if (mappings != null) {
+            String mps[] = mappings.split(";");
+            for (String mp : mps) {
+                String mpa[] = mp.split("=");
+                var.put(mpa[0], mpa[1]);
+            }
+        }
+        for (String commandPah : commandArry) {
+            mcmd.exec(commandPah, var).toString();
+            // log.debug(stdout);
+        }
+
+        // String stdout = mcmd.exec("kali_aws/work1", var).toString();
+        // log.debug(stdout);
+        // String stdout2 = mcmd.exec("kali_aws/work2", var).toString();
+        // log.debug(stdout2);
+
+        // String stdout = mcmd.exec("mcmd1/work1", var).toString();
+        // log.debug(stdout);
+        // String stdout2 = mcmd.exec("mcmd1/work2", var).toString();
+        // log.debug(stdout2);
+    }
+
+}
