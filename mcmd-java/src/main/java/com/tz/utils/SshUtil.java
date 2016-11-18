@@ -74,6 +74,9 @@ public class SshUtil {
                             strTime = strTime.replace(" ", "");
                             Thread.sleep(Integer.parseInt(strTime) * intervalBtw);
                         } else {
+                            if(command.contains("_FINISH")) {
+                                command = "echo " + command;
+                            }
                             shellStream.println(command);
                             shellStream.flush();
                             Thread.sleep(intervalBtw);

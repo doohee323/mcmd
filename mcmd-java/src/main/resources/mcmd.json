@@ -4,6 +4,23 @@
 		"intervalBtw": 1000,
 		"intervalWait": 2000
 	},
+	"mcmd0": {
+		"hostInfo": {
+			"host": "topzone.biz",
+			"port": 22,
+			"username": "ubuntu",
+			"keyfile": "/Users/dhong/.ssh/topzone_ca1.pem"
+		},
+		"work1": {
+			"type": "ssh",
+			"commands": [
+				"cd /home/ubuntu",
+				"ls -al",
+				"_SLEEP 3",
+				"_FINISH"
+			]
+		}
+	},
 	"mcmd1": {
 		"hostInfo": {
 			"host": "topzone.biz",

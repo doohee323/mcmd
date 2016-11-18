@@ -126,7 +126,7 @@ public class Mcmd {
         // Map<String, Object> var2 = new HashMap<String, Object>();
         // var2.put("company", "Topzone");
         // var2.put("domain", "topzone.biz");
-        //
+        // mcmd2.exec("mcmd0/work1", var2);
         // mcmd2.exec("kali_aws/work1", var2);
         // mcmd2.exec("kali_aws/work2", var2);
         // mcmd2.exec("kali_aws/work3", var2);
