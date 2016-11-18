@@ -96,8 +96,8 @@ public class CmdUtil {
                     command = command.replace("\"\\\"", "\"`");
                     String strArry[] = command.split("\"");
                     String fileNm = strArry[1].replaceAll("^\\s+", "");
-                    String strSearch = strArry[3].replaceAll("^\\s+", "");
-                    String strReplace = strArry[5].replaceAll("^\\s+", "");
+                    String strSearch = strArry[3];
+                    String strReplace = strArry[5];
                     if (strSearch.equals("`")) {
                         strSearch = "\"";
                     }
@@ -105,7 +105,7 @@ public class CmdUtil {
                 } else if (command.startsWith("_PREFIX ")) {
                     String strArry[] = command.split("\"");
                     String fileNm = strArry[1].replaceAll("^\\s+", "");
-                    String strSearch = strArry[3].replaceAll("^\\s+", "");
+                    String strSearch = strArry[3];
                     prefix(fileNm, strSearch);
                 } else {
                     Runtime rt = Runtime.getRuntime();

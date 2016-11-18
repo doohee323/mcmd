@@ -90,7 +90,12 @@
 				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"\\\"\" \"\" ",
 				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \" PRIMARY KEY\" \"\" ",
 				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"COMMIT;\" \"\" ",
-				"_PREFIX \"{{_curdir}}/{{company}}.sql\" \" create database IF NOT EXISTS {{company}}; use {{company}}; \" ",
+				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"CREATE TABLE contacts (first_name TEXT, middle_name TEXT, last_name TEXT, email TEXT, title TEXT, region TEXT, country TEXT, module TEXT);\" 
+				\"CREATE TABLE contacts (first_name TEXT, middle_name TEXT, last_name TEXT, email TEXT, title TEXT, region TEXT, country TEXT, module TEXT);ALTER TABLE contacts MODIFY COLUMN first_name TEXT CHARACTER SET utf8; ALTER TABLE contacts MODIFY COLUMN last_name TEXT CHARACTER SET utf8;\" ",
+				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"CREATE TABLE \" \"CREATE TABLE IF NOT EXISTS \" ",
+				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \" (\" \" (bucket TEXT, version TEXT, \" ",
+				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"VALUES(\" \"VALUES('{{company}}','{{version}}',\" ",
+				"_PREFIX \"{{_curdir}}/{{company}}.sql\" \" create database IF NOT EXISTS {{schema}}; use {{schema}}; \" ",
 				"/usr/local/bin/mysql --user={{user}} --password={{password}} -h {{mysql_host}} < {{_curdir}}/{{company}}.sql "
 			]
 		}

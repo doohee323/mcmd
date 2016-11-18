@@ -129,70 +129,73 @@ public class Mcmd {
 
         StopWatch stopWatch = new StopWatch();
 
-//         Mcmd mcmd2 = new Mcmd("mcmd.json");
-//         Map<String, Object> var2 = new HashMap<String, Object>();
-//         var2.put("company", "Fortinet");
-//         var2.put("domain", "fortinet.com");
-//        
-//         var2.put("user", "root");
-//         var2.put("password", "1");
-//         var2.put("mysql_host", "localhost");
-//        
+         Mcmd mcmd2 = new Mcmd("mcmd.json");
+         Map<String, Object> var2 = new HashMap<String, Object>();
+         var2.put("company", "Google");
+         var2.put("domain", "google.com");
+        
+         var2.put("user", "root");
+         var2.put("password", "1");
+         var2.put("mysql_host", "localhost");
+         
+         var2.put("schema", "discover");
+         var2.put("version", "1");
+         
 //         mcmd2.exec("kali_aws/work1", var2);
 //         mcmd2.exec("kali_aws/work2", var2);
-//         mcmd2.exec("kali_aws/work3", var2);
+         mcmd2.exec("kali_aws/work3", var2);
         // // mcmd2.exec("mcmd0/work1", var2);
 
-        String configFile = "mcmd.json";
-        String logConfigFile = "logback.xml";
-        String commandPaths = null;
-        String mappings = null;
+//        String configFile = "mcmd.json";
+//        String logConfigFile = "logback.xml";
+//        String commandPaths = null;
+//        String mappings = null;
+//
+//        for (int i = 0; i < args.length; i++) {
+//            if (args[i].trim().equals("-c")) {
+//                configFile = args[i + 1];
+//                i++;
+//            } else if (args[i].trim().equals("-l")) {
+//                logConfigFile = args[i + 1];
+//                i++;
+//            } else if (args[i].trim().equals("-p")) {
+//                commandPaths = args[i + 1];
+//                i++;
+//            } else if (args[i].trim().equals("-m")) {
+//                mappings = args[i + 1];
+//                i++;
+//            }
+//        }
+//
+//        ConfigUtil.setLogbackConfig(logConfigFile);
+//
+//        Mcmd mcmd = new Mcmd(configFile);
+//
+//        List<String> commandArry = new ArrayList<String>();
+//        if (commandPaths == null) {
+//            log.error(
+//                    "No command-path! ex) Mcmd -c \"mcmd.json\" -l \"logback.xml\" -p \"kali_aws/work1;kali_aws/work2\" -m \"filename=data;filename2=data2\"");
+//            throw new Exception("No command-path!");
+//        } else {
+//            String cmds[] = commandPaths.split(";");
+//            for (String cmd : cmds) {
+//                commandArry.add(cmd);
+//            }
+//        }
+//        Map<String, Object> var = new HashMap<String, Object>();
+//        if (mappings != null) {
+//            String mps[] = mappings.split(";");
+//            for (String mp : mps) {
+//                String mpa[] = mp.split("=");
+//                var.put(mpa[0], mpa[1]);
+//            }
+//        }
+//        for (String commandPah : commandArry) {
+//            mcmd.exec(commandPah, var).toString();
+//            // log.debug(stdout);
+//        }
 
-        for (int i = 0; i < args.length; i++) {
-            if (args[i].trim().equals("-c")) {
-                configFile = args[i + 1];
-                i++;
-            } else if (args[i].trim().equals("-l")) {
-                logConfigFile = args[i + 1];
-                i++;
-            } else if (args[i].trim().equals("-p")) {
-                commandPaths = args[i + 1];
-                i++;
-            } else if (args[i].trim().equals("-m")) {
-                mappings = args[i + 1];
-                i++;
-            }
-        }
-
-        ConfigUtil.setLogbackConfig(logConfigFile);
-
-        Mcmd mcmd = new Mcmd(configFile);
-
-        List<String> commandArry = new ArrayList<String>();
-        if (commandPaths == null) {
-            log.error(
-                    "No command-path! ex) Mcmd -c \"mcmd.json\" -l \"logback.xml\" -p \"kali_aws/work1;kali_aws/work2\" -m \"filename=data;filename2=data2\"");
-            throw new Exception("No command-path!");
-        } else {
-            String cmds[] = commandPaths.split(";");
-            for (String cmd : cmds) {
-                commandArry.add(cmd);
-            }
-        }
-        Map<String, Object> var = new HashMap<String, Object>();
-        if (mappings != null) {
-            String mps[] = mappings.split(";");
-            for (String mp : mps) {
-                String mpa[] = mp.split("=");
-                var.put(mpa[0], mpa[1]);
-            }
-        }
-        for (String commandPah : commandArry) {
-            mcmd.exec(commandPah, var).toString();
-            // log.debug(stdout);
-        }
-
-        stopWatch.start();
+        stopWatch.stop();
         System.out.println("///////////////: " + stopWatch.getTime());
 
         // String stdout = mcmd.exec("mcmd1/work1", var).toString();
