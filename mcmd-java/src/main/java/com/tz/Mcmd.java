@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -126,19 +127,21 @@ public class Mcmd {
      */
     public static void main(String[] args) throws Exception {
 
-//        Mcmd mcmd2 = new Mcmd("mcmd.json");
-//        Map<String, Object> var2 = new HashMap<String, Object>();
-//        var2.put("company", "Topzone");
-//        var2.put("domain", "topzone.biz");
-//
-//        var2.put("user", "root");
-//        var2.put("password", "1");
-//        var2.put("mysql_host", "localhost");
-//
-//        mcmd2.exec("kali_aws/work1", var2);
-//        mcmd2.exec("kali_aws/work2", var2);
-//        mcmd2.exec("kali_aws/work3", var2);
-////        // mcmd2.exec("mcmd0/work1", var2);
+        StopWatch stopWatch = new StopWatch();
+
+        // Mcmd mcmd2 = new Mcmd("mcmd.json");
+        // Map<String, Object> var2 = new HashMap<String, Object>();
+        // var2.put("company", "Topzone");
+        // var2.put("domain", "topzone.biz");
+        //
+        // var2.put("user", "root");
+        // var2.put("password", "1");
+        // var2.put("mysql_host", "localhost");
+        //
+        // mcmd2.exec("kali_aws/work1", var2);
+        // mcmd2.exec("kali_aws/work2", var2);
+        // mcmd2.exec("kali_aws/work3", var2);
+        //// // mcmd2.exec("mcmd0/work1", var2);
 
         String configFile = "mcmd.json";
         String logConfigFile = "logback.xml";
@@ -188,6 +191,9 @@ public class Mcmd {
             mcmd.exec(commandPah, var).toString();
             // log.debug(stdout);
         }
+
+        stopWatch.start();
+        System.out.println("///////////////: " + stopWatch.getTime());
 
         // String stdout = mcmd.exec("mcmd1/work1", var).toString();
         // log.debug(stdout);
