@@ -26,7 +26,7 @@
 			"host": "topzone.biz",
 			"port": 22,
 			"username": "ubuntu",
-			"keyfile": "/Users/dhong/.ssh/topzone_ca1.pem"
+			"keyfile": "/home/ubuntu/.ssh/topzone_ca1.pem"
 		},
 		"work1": {
 			"type": "ssh",
@@ -53,7 +53,7 @@
 			"host": "54.183.204.226",
 			"port": 22,
 			"username": "ec2-user",
-			"keyfile": "/Users/dhong/.ssh/topzone_ca1.pem"
+			"keyfile": "/home/ubuntu/.ssh/topzone_ca1.pem"
 		},
 		"work1": {
 			"type": "ssh",
@@ -102,7 +102,7 @@
 				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \" (\" \" (target TEXT, run_date TEXT, \" ",
 				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"VALUES(\" \"VALUES('{{company}}','{{run_date}}',\" ",
 				"_PREFIX \"{{_curdir}}/{{company}}.sql\" \" create database IF NOT EXISTS {{schema}}; use {{schema}}; CREATE TABLE IF NOT EXISTS history (target TEXT, run_date TEXT, resource_path TEXT, template_path TEXT); INSERT INTO history VALUES('{{company}}','{{run_date}}','','');\" ",
-				"/usr/local/bin/mysql --user={{user}} --password={{password}} -h {{mysql_host}} < {{_curdir}}/{{company}}.sql "
+				"mysql --user={{user}} --password={{password}} -h {{mysql_host}} < {{_curdir}}/{{company}}.sql "
 			]
 		}
 	}

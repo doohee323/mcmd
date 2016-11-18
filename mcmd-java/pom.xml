@@ -6,7 +6,7 @@
 
   <groupId>mcmd</groupId>
   <artifactId>mcmd-java</artifactId>
-  <version>1.0</version>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
 
   <repositories>
@@ -18,7 +18,7 @@
       <id>jdeb</id>
       <url>https://oss.sonatype.org/content/repositories/releases/org/vafer/jdeb/1.4/</url>
     </repository>
- </repositories>
+  </repositories>
 
   <dependencies>
 
@@ -140,15 +140,15 @@
                   <type>file</type>
                   <mapper>
                     <type>perm</type>
-                    <prefix>/opt/mcmd/bin</prefix>
+                    <prefix>/opt/${project.artifactId}/bin</prefix>
                   </mapper>
                 </data>
 
                 <data>
                   <type>link</type>
                   <symlink>true</symlink>
-                  <linkName>/opt/mcmd/bin/mcmd.jar</linkName>
-                  <linkTarget>/opt/mcmd/bin/${project.build.finalName}-jar-with-dependencies.jar</linkTarget>
+                  <linkName>/opt/${project.artifactId}/bin/mcmd.jar</linkName>
+                  <linkTarget>/opt/${project.artifactId}/bin/${project.build.finalName}-jar-with-dependencies.jar</linkTarget>
                 </data>
 
                 <data>
@@ -161,6 +161,17 @@
                     <prefix>/etc/${project.artifactId}</prefix>
                   </mapper>
                 </data>
+
+<!--                 <data> -->
+<!--                   <src>${basedir}/src/deb/init.d</src> -->
+<!--                   <type>directory</type> -->
+<!--                   <mapper> -->
+<!--                     <type>perm</type> -->
+<!--                     <prefix>/etc/init.d</prefix> -->
+<!--                     <user>loader</user> -->
+<!--                     <group>loader</group> -->
+<!--                   </mapper> -->
+<!--                 </data> -->
 
                 <data>
                   <type>template</type>
