@@ -75,8 +75,12 @@
 		"work2": {
 			"type": "ssh",
 			"commands": [
+				"cd /root/data",
 				"sudo sqlite3 /root/.recon-ng/workspaces/{{domain}}/data.db .dump .quit > /home/ec2-user/{{company}}.sql",
-				"_WAIT ':~$",
+				"_WAIT '/root/data$'",
+				"sudo cp /root/.recon-ng/workspaces/{{domain}}/data.db /root/data/{{domain}}",
+				"sudo tar cvfz {{domain}}.zip {{domain}}",
+				"_WAIT '/root/data$'",
 				"_FINISH"
 			]
 		},
@@ -84,6 +88,8 @@
 			"type": "shell",
 			"commands": [
 				"scp -i {{keyfile}} {{username}}@{{host}}:/home/ec2-user/{{company}}.sql {{_curdir}}/{{company}}.sql",
+				"_SLEEP 10",
+				"scp -i {{keyfile}} {{username}}@{{host}}:/root/data/{{domain}}.zip {{_curdir}}/{{domain}}.zip",
 				"_SLEEP 10",
 				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"PRAGMA foreign_keys=OFF;\" \"\" ",
 				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"BEGIN TRANSACTION;\" \"\" ",
@@ -93,9 +99,9 @@
 				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"CREATE TABLE contacts (first_name TEXT, middle_name TEXT, last_name TEXT, email TEXT, title TEXT, region TEXT, country TEXT, module TEXT);\" 
 				\"CREATE TABLE contacts (first_name TEXT, middle_name TEXT, last_name TEXT, email TEXT, title TEXT, region TEXT, country TEXT, module TEXT);ALTER TABLE contacts MODIFY COLUMN first_name TEXT CHARACTER SET utf8; ALTER TABLE contacts MODIFY COLUMN last_name TEXT CHARACTER SET utf8;\" ",
 				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"CREATE TABLE \" \"CREATE TABLE IF NOT EXISTS \" ",
-				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \" (\" \" (bucket TEXT, version TEXT, \" ",
-				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"VALUES(\" \"VALUES('{{company}}','{{version}}',\" ",
-				"_PREFIX \"{{_curdir}}/{{company}}.sql\" \" create database IF NOT EXISTS {{schema}}; use {{schema}}; \" ",
+				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \" (\" \" (target TEXT, run_date TEXT, \" ",
+				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"VALUES(\" \"VALUES('{{company}}','{{run_date}}',\" ",
+				"_PREFIX \"{{_curdir}}/{{company}}.sql\" \" create database IF NOT EXISTS {{schema}}; use {{schema}}; CREATE TABLE IF NOT EXISTS history (target TEXT, run_date TEXT, resource_path TEXT, template_path TEXT); INSERT INTO history VALUES('{{company}}','{{run_date}}','','');\" ",
 				"/usr/local/bin/mysql --user={{user}} --password={{password}} -h {{mysql_host}} < {{_curdir}}/{{company}}.sql "
 			]
 		}

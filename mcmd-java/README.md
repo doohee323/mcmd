@@ -10,19 +10,19 @@
 	    
 	   java -jar mcmd-java-1.0.0-SNAPSHOT-jar-with-dependencies.jar \
 	   		-p "kali_aws/work1;kali_aws/work2;kali_aws/work3" \
-	   		-m "company=Topzone;domain=topzone.biz;mysql_host=localhost;user=root;password=1;schema=discover;version=1" \
+	   		-m "company=Topzone;domain=topzone.biz;mysql_host=localhost;user=root;password=1;schema=discover;run_date=20161118" \
 	   		-c "/Users/dhong/Documents/workspace/etc/mcmd/mcmd-java/src/main/resources/mcmd.json" \
 	   		-l "/Users/dhong/Documents/workspace/etc/mcmd/mcmd-java/src/main/resources/logback.xml" 
 	   		
 	   java -jar mcmd-java-1.0.0-SNAPSHOT-jar-with-dependencies.jar \
 	   		-p "kali_aws/work1;kali_aws/work2;kali_aws/work3" \
-	   		-m "company=Fortinet;domain=fortinet.com;mysql_host=localhost;user=root;password=1;schema=discover;version=1" \
+	   		-m "company=Fortinet;domain=fortinet.com;mysql_host=localhost;user=root;password=1;schema=discover;run_date=20161118" \
 	   		-c "/Users/dhong/Documents/workspace/etc/mcmd/mcmd-java/src/main/resources/mcmd.json" \
 	   		-l "/Users/dhong/Documents/workspace/etc/mcmd/mcmd-java/src/main/resources/logback.xml"	   		
 	   		
 	   java -jar mcmd-java-1.0.0-SNAPSHOT-jar-with-dependencies.jar \
 	   		-p "kali_aws/work1;kali_aws/work2;kali_aws/work3" \
-	   		-m "company=Google;domain=google.com;mysql_host=localhost;user=root;password=1;schema=discover;version=1" \
+	   		-m "company=Google;domain=google.com;mysql_host=localhost;user=root;password=1;schema=discover;run_date=20161118" \
 	   		-c "/Users/dhong/Documents/workspace/etc/mcmd/mcmd-java/src/main/resources/mcmd.json" \
 	   		-l "/Users/dhong/Documents/workspace/etc/mcmd/mcmd-java/src/main/resources/logback.xml"	   		
 	   		

@@ -128,21 +128,21 @@ public class Mcmd {
     public static void main(String[] args) throws Exception {
 
         StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
 
          Mcmd mcmd2 = new Mcmd("mcmd.json");
          Map<String, Object> var2 = new HashMap<String, Object>();
-         var2.put("company", "Google");
-         var2.put("domain", "google.com");
+         var2.put("company", "Fortinet");
+         var2.put("domain", "fortinet.com");
         
          var2.put("user", "root");
          var2.put("password", "1");
          var2.put("mysql_host", "localhost");
          
          var2.put("schema", "discover");
-         var2.put("version", "1");
-         
+         var2.put("run_date", "20161118");
 //         mcmd2.exec("kali_aws/work1", var2);
-//         mcmd2.exec("kali_aws/work2", var2);
+         mcmd2.exec("kali_aws/work2", var2);
          mcmd2.exec("kali_aws/work3", var2);
         // // mcmd2.exec("mcmd0/work1", var2);
 
