@@ -75,7 +75,7 @@
 		"work2": {
 			"type": "ssh",
 			"commands": [
-				"sudo sqlite3 /root/.recon-ng/workspaces/{{domain}}/data.db .dump .quit > /home/ec2-user/{{domain}}.sql",
+				"sudo sqlite3 /root/.recon-ng/workspaces/{{domain}}/data.db .dump .quit > /home/ec2-user/{{company}}.sql",
 				"_WAIT ':~$",
 				"_FINISH"
 			]
@@ -83,8 +83,15 @@
 		"work3": {
 			"type": "shell",
 			"commands": [
-				"scp -i {{keyfile}} {{username}}@{{host}}:/home/ec2-user/{{domain}}.sql .",
-				"_SLEEP 10"
+				"scp -i {{keyfile}} {{username}}@{{host}}:/home/ec2-user/{{company}}.sql .",
+				"_SLEEP 10",
+				"_REPLACE \"{{company}}.sql\" \"PRAGMA foreign_keys=OFF;\" \"\" ",
+				"_REPLACE \"{{company}}.sql\" \"BEGIN TRANSACTION;\" \"\" ",
+				"_REPLACE \"{{company}}.sql\" \"\\\"\" \"\" ",
+				"_REPLACE \"{{company}}.sql\" \" PRIMARY KEY\" \"\" ",
+				"_REPLACE \"{{company}}.sql\" \"COMMIT;\" \"\" ",
+				"_PREFIX \"{{company}}.sql\" \" create database IF NOT EXISTS {{company}}; use {{company}}; \" ",
+				"/usr/local/bin/mysql --user={{user}} --password={{password}} -h {{mysql_host}} < {{_curdir}}/{{company}}.sql "
 			]
 		}
 	}

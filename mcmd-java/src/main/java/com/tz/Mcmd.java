@@ -2,6 +2,7 @@ package com.tz;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,11 +26,13 @@ public class Mcmd {
 
     private Gson gson;
     private JsonObject conf = null;
+    public String _CurDir = null;
 
     public Mcmd(String configFile) throws Exception {
         gson = new Gson();
         final Reader reader = ConfigUtil.getFileReader(configFile);
         try {
+            _CurDir = Paths.get("").toAbsolutePath().toString();
             conf = gson.fromJson(reader, JsonObject.class);
         } catch (final Exception e) {
             e.printStackTrace();
@@ -75,6 +78,7 @@ public class Mcmd {
                 JsonElement v = entry.getValue();
                 _hostInfo.put(key, v.getAsString());
             }
+            _hostInfo.put("_curdir", _CurDir);
             for (int j = 0; j < mCommand.size(); j++) {
                 String cmd = mCommand.get(j).getAsString();
                 cmd = replaceVariables(cmd, _hostInfo);
@@ -122,14 +126,19 @@ public class Mcmd {
      */
     public static void main(String[] args) throws Exception {
 
-        // Mcmd mcmd2 = new Mcmd("mcmd.json");
-        // Map<String, Object> var2 = new HashMap<String, Object>();
-        // var2.put("company", "Topzone");
-        // var2.put("domain", "topzone.biz");
-        // mcmd2.exec("mcmd0/work1", var2);
-        // mcmd2.exec("kali_aws/work1", var2);
-        // mcmd2.exec("kali_aws/work2", var2);
-        // mcmd2.exec("kali_aws/work3", var2);
+//        Mcmd mcmd2 = new Mcmd("mcmd.json");
+//        Map<String, Object> var2 = new HashMap<String, Object>();
+//        var2.put("company", "Topzone");
+//        var2.put("domain", "topzone.biz");
+//
+//        var2.put("user", "root");
+//        var2.put("password", "1");
+//        var2.put("mysql_host", "localhost");
+//
+//        mcmd2.exec("kali_aws/work1", var2);
+//        mcmd2.exec("kali_aws/work2", var2);
+//        mcmd2.exec("kali_aws/work3", var2);
+////        // mcmd2.exec("mcmd0/work1", var2);
 
         String configFile = "mcmd.json";
         String logConfigFile = "logback.xml";
