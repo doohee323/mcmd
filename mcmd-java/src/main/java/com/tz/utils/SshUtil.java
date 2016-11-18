@@ -23,7 +23,7 @@ public class SshUtil {
 
     static final Logger log = LoggerFactory.getLogger(SshUtil.class);
 
-    public int maxWait = 40;
+    public int maxWait = 1000;
     public int intervalBtw = 500;
     public int intervalWait = 2000;
 

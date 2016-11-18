@@ -92,11 +92,8 @@ public class Mcmd {
                 TelnetUtil util = new TelnetUtil();
                 util.cmd(null);
             } else { // shell
-                StringBuffer sb = new StringBuffer();
-                for (int j = 0; j < commands.size(); j++) {
-                    sb.append(CmdUtil.cmd(commands.get(j).toString()));
-                }
-                return sb;
+                CmdUtil util = new CmdUtil();
+                return util.cmd(commands);
             }
         } catch (final Exception e) {
             e.printStackTrace();
@@ -125,14 +122,14 @@ public class Mcmd {
      */
     public static void main(String[] args) throws Exception {
 
-//         Mcmd mcmd2 = new Mcmd("mcmd.json");
-//         Map<String, Object> var2 = new HashMap<String, Object>();
-//         var2.put("domain", "topzone.biz");
-//        
-//        // String stdout = mcmd2.exec("kali_aws/work1", var2).toString();
-//        // log.debug(stdout);
-//         String stdout2 = mcmd2.exec("kali_aws/work2", var2).toString();
-//         log.debug(stdout2);
+        // Mcmd mcmd2 = new Mcmd("mcmd.json");
+        // Map<String, Object> var2 = new HashMap<String, Object>();
+        // var2.put("company", "Topzone");
+        // var2.put("domain", "topzone.biz");
+        //
+        // mcmd2.exec("kali_aws/work1", var2);
+        // mcmd2.exec("kali_aws/work2", var2);
+        // mcmd2.exec("kali_aws/work3", var2);
 
         String configFile = "mcmd.json";
         String logConfigFile = "logback.xml";

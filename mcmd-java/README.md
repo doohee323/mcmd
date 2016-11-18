@@ -55,5 +55,5 @@ You can define commands which you want to run sequentially.
     var.put("filename", "aaa");
     			
     // json path
-    String stdout = mcmd.exec("mcmd1/work1", var).toString(); 
+    mcmd.exec("mcmd1/work1", var); 
 ```

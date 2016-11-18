@@ -1,6 +1,6 @@
 {
 	"config": {
-		"maxWait": 40,
+		"maxWait": 1000,
 		"intervalBtw": 1000,
 		"intervalWait": 2000
 	},
@@ -56,10 +56,18 @@
 			]
 		},
 		"work2": {
+			"type": "ssh",
+			"commands": [
+				"sudo sqlite3 /root/.recon-ng/workspaces/{{domain}}/data.db .dump .quit > /home/ec2-user/{{domain}}.sql",
+				"_WAIT ':~$",
+				"_FINISH"
+			]
+		},
+		"work3": {
 			"type": "shell",
 			"commands": [
-				"sqlite3 /root/.recon-ng/workspaces/{{domain}}/data.db .dump .quit > {{domain}}.sql",
-				"scp -i {{keyfile}} {{username}}@{{host}}:/home/ec2-user/{{domain}}.sql ."
+				"scp -i {{keyfile}} {{username}}@{{host}}:/home/ec2-user/{{domain}}.sql .",
+				"_SLEEP 10"
 			]
 		}
 	}
