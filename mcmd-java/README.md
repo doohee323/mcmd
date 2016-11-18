@@ -1,6 +1,6 @@
 # Multiple command on ssh / telnet / shell
 
-# Build
+## Build
 ```
 	1. define multiple commands in json file
 		/mcmd-java/src/main/resources/mcmd.json
@@ -15,9 +15,9 @@
 		sudo dpkg -i mcmd-java_1.0.0_all.deb
 ```
 
-# Run
-	1. run with jar 
+## Run
 ```
+	1. run with jar 
 	   java -jar mcmd-java-1.0.0-jar-with-dependencies.jar 
 	   	-p "mcmd1/work1;mcmd1/work2" 		// required, run_path defined in json file
 	   	-m "filename=data;filename2=data2" 	// optional, mapping variables for replacement
@@ -25,8 +25,8 @@
 	   	-l "logback.xml"					// optional, logback file, default: /mcmd-java/src/main/resources/logback.xml
 ```
 	   
-	2. run after installing debian file (mcmd-java_1.0.0_all.deb)
 ```
+	2. run after installing debian file (mcmd-java_1.0.0_all.deb)
 	   /opt/mcmd-java/bin: executable files
 	   /etc/mcmd-java: configuratino files
 	   /var/log/mcmd-java: log files
@@ -47,8 +47,9 @@
 	   		-c "/etc/mcmd-java/mcmd.json" 
 	   		-l "/etc/mcmd-java/logback.xml"	   		
 ```
-	3. Use in Java
+
 ```
+	3. Use in Java
 		// configuration file
 	    Mcmd mcmd = new Mcmd("mcmd.json");	
 	    
@@ -60,7 +61,7 @@
 	    mcmd.exec("mcmd1/work1", var); 
 ```
 
-# Configuration file
+## Configuration file
 	You can define commands which you want to run sequentially.
 
 ```
