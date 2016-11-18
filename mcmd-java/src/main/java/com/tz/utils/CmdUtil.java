@@ -125,7 +125,6 @@ public class CmdUtil {
                         }
                     } catch (Exception e) {
                         log.error("shell return1 :" + e.getMessage());
-                        throw new Exception("shell command error 1!!!:" + command);
                     }
                     StringBuffer strReturn = new StringBuffer();
                     if (pc.exitValue() == 0) {

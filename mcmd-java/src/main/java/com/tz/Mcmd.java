@@ -129,19 +129,19 @@ public class Mcmd {
 
         StopWatch stopWatch = new StopWatch();
 
-        // Mcmd mcmd2 = new Mcmd("mcmd.json");
-        // Map<String, Object> var2 = new HashMap<String, Object>();
-        // var2.put("company", "Topzone");
-        // var2.put("domain", "topzone.biz");
-        //
-        // var2.put("user", "root");
-        // var2.put("password", "1");
-        // var2.put("mysql_host", "localhost");
-        //
-        // mcmd2.exec("kali_aws/work1", var2);
-        // mcmd2.exec("kali_aws/work2", var2);
-        // mcmd2.exec("kali_aws/work3", var2);
-        //// // mcmd2.exec("mcmd0/work1", var2);
+//         Mcmd mcmd2 = new Mcmd("mcmd.json");
+//         Map<String, Object> var2 = new HashMap<String, Object>();
+//         var2.put("company", "Fortinet");
+//         var2.put("domain", "fortinet.com");
+//        
+//         var2.put("user", "root");
+//         var2.put("password", "1");
+//         var2.put("mysql_host", "localhost");
+//        
+//         mcmd2.exec("kali_aws/work1", var2);
+//         mcmd2.exec("kali_aws/work2", var2);
+//         mcmd2.exec("kali_aws/work3", var2);
+        // // mcmd2.exec("mcmd0/work1", var2);
 
         String configFile = "mcmd.json";
         String logConfigFile = "logback.xml";

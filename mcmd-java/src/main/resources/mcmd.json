@@ -83,14 +83,14 @@
 		"work3": {
 			"type": "shell",
 			"commands": [
-				"scp -i {{keyfile}} {{username}}@{{host}}:/home/ec2-user/{{company}}.sql .",
+				"scp -i {{keyfile}} {{username}}@{{host}}:/home/ec2-user/{{company}}.sql {{_curdir}}/{{company}}.sql",
 				"_SLEEP 10",
-				"_REPLACE \"{{company}}.sql\" \"PRAGMA foreign_keys=OFF;\" \"\" ",
-				"_REPLACE \"{{company}}.sql\" \"BEGIN TRANSACTION;\" \"\" ",
-				"_REPLACE \"{{company}}.sql\" \"\\\"\" \"\" ",
-				"_REPLACE \"{{company}}.sql\" \" PRIMARY KEY\" \"\" ",
-				"_REPLACE \"{{company}}.sql\" \"COMMIT;\" \"\" ",
-				"_PREFIX \"{{company}}.sql\" \" create database IF NOT EXISTS {{company}}; use {{company}}; \" ",
+				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"PRAGMA foreign_keys=OFF;\" \"\" ",
+				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"BEGIN TRANSACTION;\" \"\" ",
+				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"\\\"\" \"\" ",
+				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \" PRIMARY KEY\" \"\" ",
+				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"COMMIT;\" \"\" ",
+				"_PREFIX \"{{_curdir}}/{{company}}.sql\" \" create database IF NOT EXISTS {{company}}; use {{company}}; \" ",
 				"/usr/local/bin/mysql --user={{user}} --password={{password}} -h {{mysql_host}} < {{_curdir}}/{{company}}.sql "
 			]
 		}
