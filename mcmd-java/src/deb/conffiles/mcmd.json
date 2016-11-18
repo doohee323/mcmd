@@ -1,0 +1,109 @@
+{
+	"config": {
+		"maxWait": 1000,
+		"intervalBtw": 1000,
+		"intervalWait": 2000
+	},
+	"mcmd0": {
+		"hostInfo": {
+			"host": "topzone.biz",
+			"port": 22,
+			"username": "ubuntu",
+			"keyfile": "/Users/dhong/.ssh/topzone_ca1.pem"
+		},
+		"work1": {
+			"type": "ssh",
+			"commands": [
+				"cd /home/ubuntu",
+				"ls -al",
+				"_SLEEP 3",
+				"_FINISH"
+			]
+		}
+	},
+	"mcmd1": {
+		"hostInfo": {
+			"host": "topzone.biz",
+			"port": 22,
+			"username": "ubuntu",
+			"keyfile": "/Users/dhong/.ssh/topzone_ca1.pem"
+		},
+		"work1": {
+			"type": "ssh",
+			"commands": [
+				"cd /home/ubuntu",
+				"rm -Rf {{filename}}.tar",
+				"rm -Rf {{filename}}.tar_bak",
+				"tar cvf {{filename}}.tar *",
+				"_WAIT ':~$",
+				"_SLEEP 3",
+				"mv {{filename}}.tar {{filename}}.tar_bak",
+				"_FINISH"
+			]
+		},
+		"work2": {
+			"type": "shell",
+			"commands": [
+				"scp -i {{keyfile}} {{username}}@{{host}}:/home/ubuntu/{{filename}}.tar_bak ."
+			]
+		}
+	},
+	"kali_aws": {
+		"hostInfo": {
+			"host": "54.183.204.226",
+			"port": 22,
+			"username": "ec2-user",
+			"keyfile": "/Users/dhong/.ssh/topzone_ca1.pem"
+		},
+		"work1": {
+			"type": "ssh",
+			"commands": [
+				"cd /opt/discover",
+				"sudo bash discover.sh",
+				"_WAIT 'Choice:'",
+				"1",
+				"_WAIT 'Choice:'",
+				"1",
+				"_WAIT 'Company:'",
+				"{{company}}",
+				"_WAIT 'Domain:'",
+				"{{domain}}",
+				"_WAIT 'Scan complete.'",
+				"_FINISH"
+			]
+		},
+		"work2": {
+			"type": "ssh",
+			"commands": [
+				"cd /root/data",
+				"sudo sqlite3 /root/.recon-ng/workspaces/{{domain}}/data.db .dump .quit > /home/ec2-user/{{company}}.sql",
+				"_WAIT '/root/data$'",
+				"sudo cp /root/.recon-ng/workspaces/{{domain}}/data.db /root/data/{{domain}}",
+				"sudo tar cvfz {{domain}}.zip {{domain}}",
+				"_WAIT '/root/data$'",
+				"_FINISH"
+			]
+		},
+		"work3": {
+			"type": "shell",
+			"commands": [
+				"scp -i {{keyfile}} {{username}}@{{host}}:/home/ec2-user/{{company}}.sql {{_curdir}}/{{company}}.sql",
+				"_SLEEP 10",
+				"scp -i {{keyfile}} {{username}}@{{host}}:/root/data/{{domain}}.zip {{_curdir}}/{{domain}}.zip",
+				"_SLEEP 10",
+				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"PRAGMA foreign_keys=OFF;\" \"\" ",
+				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"BEGIN TRANSACTION;\" \"\" ",
+				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"\\\"\" \"\" ",
+				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \" PRIMARY KEY\" \"\" ",
+				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"COMMIT;\" \"\" ",
+				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"CREATE TABLE contacts (first_name TEXT, middle_name TEXT, last_name TEXT, email TEXT, title TEXT, region TEXT, country TEXT, module TEXT);\" 
+				\"CREATE TABLE contacts (first_name TEXT, middle_name TEXT, last_name TEXT, email TEXT, title TEXT, region TEXT, country TEXT, module TEXT);ALTER TABLE contacts MODIFY COLUMN first_name TEXT CHARACTER SET utf8; ALTER TABLE contacts MODIFY COLUMN last_name TEXT CHARACTER SET utf8;\" ",
+				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"CREATE TABLE \" \"CREATE TABLE IF NOT EXISTS \" ",
+				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \" (\" \" (target TEXT, run_date TEXT, \" ",
+				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"VALUES(\" \"VALUES('{{company}}','{{run_date}}',\" ",
+				"_PREFIX \"{{_curdir}}/{{company}}.sql\" \" create database IF NOT EXISTS {{schema}}; use {{schema}}; CREATE TABLE IF NOT EXISTS history (target TEXT, run_date TEXT, resource_path TEXT, template_path TEXT); INSERT INTO history VALUES('{{company}}','{{run_date}}','','');\" ",
+				"/usr/local/bin/mysql --user={{user}} --password={{password}} -h {{mysql_host}} < {{_curdir}}/{{company}}.sql "
+			]
+		}
+	}
+}

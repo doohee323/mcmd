@@ -1,0 +1,10 @@
+Package: [[name]]
+Version: [[version]]
+Section: misc
+Priority: optional
+Architecture: all
+Depends:
+Maintainer: "Topzone" <doohee323@gmail.com>
+Homepage: http://doohee323.github.io
+Description: [[description]]
+ This is an extended description for Mcmd.

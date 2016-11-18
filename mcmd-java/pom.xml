@@ -6,10 +6,28 @@
 
   <groupId>mcmd</groupId>
   <artifactId>mcmd-java</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0</version>
   <packaging>jar</packaging>
 
+  <repositories>
+    <repository>
+      <id>central</id>
+      <url>http://repo1.maven.org/maven2/</url>
+    </repository>
+    <repository>
+      <id>jdeb</id>
+      <url>https://oss.sonatype.org/content/repositories/releases/org/vafer/jdeb/1.4/</url>
+    </repository>
+ </repositories>
+
   <dependencies>
+
+    <dependency>
+      <groupId>org.vafer</groupId>
+      <artifactId>jdeb</artifactId>
+      <version>1.4</version>
+    </dependency>
+
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
@@ -91,6 +109,74 @@
             <goals>
               <goal>single</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- This will build .deb file -->
+      <plugin>
+        <artifactId>jdeb</artifactId>
+        <groupId>org.vafer</groupId>
+        <version>1.4</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>jdeb</goal>
+            </goals>
+            <configuration>
+              <classifier>all</classifier>
+              <verbose>true</verbose>
+              <snapshotExpand>true</snapshotExpand>
+            <!-- expand "SNAPSHOT" to what is in the "USER" env variable -->
+              <snapshotEnv>USER</snapshotEnv>
+              <verbose>true</verbose>
+
+            <!-- Configure files here -->
+              <dataSet>
+
+                <data>
+                  <src>${project.build.directory}/${project.build.finalName}-jar-with-dependencies.jar</src>
+                  <type>file</type>
+                  <mapper>
+                    <type>perm</type>
+                    <prefix>/opt/mcmd/bin</prefix>
+                  </mapper>
+                </data>
+
+                <data>
+                  <type>link</type>
+                  <symlink>true</symlink>
+                  <linkName>/opt/mcmd/bin/mcmd.jar</linkName>
+                  <linkTarget>/opt/mcmd/bin/${project.build.finalName}-jar-with-dependencies.jar</linkTarget>
+                </data>
+
+                <data>
+                  <src>${basedir}/src/deb/conffiles</src>
+                  <type>directory</type>
+                  <includes />
+                  <conffile>true</conffile>
+                  <mapper>
+                    <type>perm</type>
+                    <prefix>/etc/${project.artifactId}</prefix>
+                  </mapper>
+                </data>
+
+                <data>
+                  <type>template</type>
+                  <paths>
+                    <path>/etc/${project.artifactId}</path>
+                    <path>/var/lib/${project.artifactId}</path>
+                    <path>/var/log/${project.artifactId}</path>
+                    <path>/var/run/${project.artifactId}</path>
+                  </paths>
+                  <mapper>
+                    <type>perm</type>
+                  </mapper>
+                </data>
+
+              </dataSet>
+            </configuration>
           </execution>
         </executions>
       </plugin>
