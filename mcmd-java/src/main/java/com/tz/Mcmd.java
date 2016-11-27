@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,12 +54,9 @@ public class Mcmd {
         }
     }
 
-    public StringBuffer exec(String arg, Map<String, Object> var) throws Exception {
+    public StringBuffer exec(String arg, JsonObject config, Map<String, Object> var) throws Exception {
         try {
             List<String> commands = new ArrayList<String>();
-
-            String configStr = conf.get("config").toString();
-            JsonObject config = gson.fromJson(configStr, JsonObject.class);
 
             String path[] = arg.split("/");
             String mcmd1 = conf.get(path[0]).toString();
@@ -108,6 +106,17 @@ public class Mcmd {
         return null;
     }
 
+    public StringBuffer exec(String configStr, Map<String, Object> var) throws Exception {
+        try {
+            JsonObject config = gson.fromJson(configStr, JsonObject.class);
+            return exec("", config, var);
+        } catch (final Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+            throw new Exception(e.getMessage());
+        }
+    }
+
     public String replaceVariables(String orgStr, Map<String, Object> param) {
         for (Map.Entry<String, Object> entry : param.entrySet()) {
             String key = entry.getKey();
@@ -130,27 +139,29 @@ public class Mcmd {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
-//         Mcmd mcmd2 = new Mcmd("mcmd.json");
-//         Map<String, Object> var2 = new HashMap<String, Object>();
-//         var2.put("company", "Fortinet");
-//         var2.put("domain", "fortinet.com");
-//        
-//         var2.put("user", "root");
-//         var2.put("password", "1");
-//         var2.put("mysql_host", "localhost");
-//         
-//         var2.put("schema", "discover");
-//         var2.put("run_date", "20161118");
-////         mcmd2.exec("kali_aws/work1", var2);
-//         mcmd2.exec("kali_aws/work2", var2);
-//         mcmd2.exec("kali_aws/work3", var2);
-//        // // mcmd2.exec("mcmd0/work1", var2);
+        // Mcmd mcmd2 = new Mcmd("mcmd.json");
+        // Map<String, Object> var2 = new HashMap<String, Object>();
+        // var2.put("company", "Fortinet");
+        // var2.put("domain", "fortinet.com");
+        //
+        // var2.put("user", "root");
+        // var2.put("password", "1");
+        // var2.put("mysql_host", "localhost");
+        //
+        // var2.put("schema", "discover");
+        // var2.put("run_date", "20161118");
+        //// mcmd2.exec("kali_aws/work1", var2);
+        // mcmd2.exec("kali_aws/work2", var2);
+        // mcmd2.exec("kali_aws/work3", var2);
+        // // // mcmd2.exec("mcmd0/work1", var2);
 
         String configFile = "mcmd.json";
         String logConfigFile = "logback.xml";
         String commandPaths = null;
+        String jsonStr = null;
         String mappings = null;
 
+        boolean bJchk = false;
         for (int i = 0; i < args.length; i++) {
             if (args[i].trim().equals("-c")) {
                 configFile = args[i + 1];
@@ -158,6 +169,9 @@ public class Mcmd {
             } else if (args[i].trim().equals("-l")) {
                 logConfigFile = args[i + 1];
                 i++;
+            } else if (args[i].trim().equals("-j")) {
+                bJchk = true;
+                break;
             } else if (args[i].trim().equals("-p")) {
                 commandPaths = args[i + 1];
                 i++;
@@ -165,6 +179,12 @@ public class Mcmd {
                 mappings = args[i + 1];
                 i++;
             }
+        }
+        if(bJchk) {
+            for (int i = 0; i < args.length; i++) {
+                jsonStr += args[i];
+            }
+            jsonStr = "{" + jsonStr.substring(jsonStr.indexOf("-j\"") + 2, jsonStr.length() - 1) + "}";
         }
 
         System.out.println("////////////////// logConfigFile: " + logConfigFile);
@@ -174,27 +194,31 @@ public class Mcmd {
         Mcmd mcmd = new Mcmd(configFile);
 
         List<String> commandArry = new ArrayList<String>();
-        if (commandPaths == null) {
-            log.error(
-                    "No command-path! ex) Mcmd -c \"mcmd.json\" -l \"logback.xml\" -p \"kali_aws/work1;kali_aws/work2\" -m \"filename=data;filename2=data2\"");
-            throw new Exception("No command-path!");
-        } else {
-            String cmds[] = commandPaths.split(";");
-            for (String cmd : cmds) {
-                commandArry.add(cmd);
-            }
-        }
         Map<String, Object> var = new HashMap<String, Object>();
-        if (mappings != null) {
-            String mps[] = mappings.split(";");
-            for (String mp : mps) {
-                String mpa[] = mp.split("=");
-                var.put(mpa[0], mpa[1]);
+        if (jsonStr == null) {
+            if (commandPaths == null) {
+                log.error(
+                        "No command-path! ex) Mcmd -c \"mcmd.json\" -l \"logback.xml\" -p \"kali_aws/work1;kali_aws/work2\" -m \"filename=data;filename2=data2\"");
+                throw new Exception("No command-path!");
+            } else {
+                String cmds[] = commandPaths.split(";");
+                for (String cmd : cmds) {
+                    commandArry.add(cmd);
+                }
             }
-        }
-        for (String commandPah : commandArry) {
-            mcmd.exec(commandPah, var).toString();
-            // log.debug(stdout);
+            if (mappings != null) {
+                String mps[] = mappings.split(";");
+                for (String mp : mps) {
+                    String mpa[] = mp.split("=");
+                    var.put(mpa[0], mpa[1]);
+                }
+            }
+            for (String commandPah : commandArry) {
+                mcmd.exec(commandPah, var).toString();
+                // log.debug(stdout);
+            }
+        } else {
+            mcmd.exec(jsonStr, var).toString();
         }
 
         stopWatch.stop();

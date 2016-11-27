@@ -87,22 +87,22 @@
 		"work3": {
 			"type": "shell",
 			"commands": [
-				"scp -i {{keyfile}} {{username}}@{{host}}:/home/ec2-user/{{company}}.sql {{_curdir}}/{{company}}.sql",
+				"scp -i {{keyfile}} {{username}}@{{host}}:/home/ec2-user/{{company}}.sql _CURDIR/{{company}}.sql",
 				"_SLEEP 10",
-				"scp -i {{keyfile}} {{username}}@{{host}}:/root/data/{{domain}}.zip {{_curdir}}/{{domain}}.zip",
+				"scp -i {{keyfile}} {{username}}@{{host}}:/root/data/{{domain}}.zip _CURDIR/{{domain}}.zip",
 				"_SLEEP 10",
-				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"PRAGMA foreign_keys=OFF;\" \"\" ",
-				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"BEGIN TRANSACTION;\" \"\" ",
-				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"\\\"\" \"\" ",
-				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \" PRIMARY KEY\" \"\" ",
-				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"COMMIT;\" \"\" ",
-				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"CREATE TABLE contacts (first_name TEXT, middle_name TEXT, last_name TEXT, email TEXT, title TEXT, region TEXT, country TEXT, module TEXT);\" 
-				\"CREATE TABLE contacts (first_name TEXT, middle_name TEXT, last_name TEXT, email TEXT, title TEXT, region TEXT, country TEXT, module TEXT);ALTER TABLE contacts MODIFY COLUMN first_name TEXT CHARACTER SET utf8; ALTER TABLE contacts MODIFY COLUMN last_name TEXT CHARACTER SET utf8;\" ",
-				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"CREATE TABLE \" \"CREATE TABLE IF NOT EXISTS \" ",
-				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \" (\" \" (target TEXT, run_date TEXT, \" ",
-				"_REPLACE \"{{_curdir}}/{{company}}.sql\" \"VALUES(\" \"VALUES('{{company}}','{{run_date}}',\" ",
-				"_PREFIX \"{{_curdir}}/{{company}}.sql\" \" create database IF NOT EXISTS {{schema}}; use {{schema}}; CREATE TABLE IF NOT EXISTS history (target TEXT, run_date TEXT, resource_path TEXT, template_path TEXT); INSERT INTO history VALUES('{{company}}','{{run_date}}','','');\" ",
-				"mysql --user={{user}} --password={{password}} -h {{mysql_host}} < {{_curdir}}/{{company}}.sql "
+				"_REPLACE `_CURDIR/{{company}}.sql` `PRAGMA foreign_keys=OFF;` `` ",
+				"_REPLACE `_CURDIR/{{company}}.sql` `BEGIN TRANSACTION;` `` ",
+				"_REPLACE `_CURDIR/{{company}}.sql` `\\`` `` ",
+				"_REPLACE `_CURDIR/{{company}}.sql` ` PRIMARY KEY` `` ",
+				"_REPLACE `_CURDIR/{{company}}.sql` `COMMIT;` `` ",
+				"_REPLACE `_CURDIR/{{company}}.sql` `CREATE TABLE contacts (first_name TEXT, middle_name TEXT, last_name TEXT, email TEXT, title TEXT, region TEXT, country TEXT, module TEXT);` 
+				`CREATE TABLE contacts (first_name TEXT, middle_name TEXT, last_name TEXT, email TEXT, title TEXT, region TEXT, country TEXT, module TEXT);ALTER TABLE contacts MODIFY COLUMN first_name TEXT CHARACTER SET utf8; ALTER TABLE contacts MODIFY COLUMN last_name TEXT CHARACTER SET utf8;` ",
+				"_REPLACE `_CURDIR/{{company}}.sql` `CREATE TABLE ` `CREATE TABLE IF NOT EXISTS ` ",
+				"_REPLACE `_CURDIR/{{company}}.sql` ` (` ` (target TEXT, run_date TEXT, ` ",
+				"_REPLACE `_CURDIR/{{company}}.sql` `VALUES(` `VALUES('{{company}}','{{run_date}}',` ",
+				"_PREFIX `_CURDIR/{{company}}.sql` ` create database IF NOT EXISTS {{schema}}; use {{schema}}; CREATE TABLE IF NOT EXISTS history (target TEXT, run_date TEXT, resource_path TEXT, template_path TEXT); INSERT INTO history VALUES('{{company}}','{{run_date}}','','');` ",
+				"/usr/local/Cellar/mysql/5.7.14/bin/mysql --user={{user}} --password={{password}} -h {{mysql_host}} < _CURDIR/{{company}}.sql "
 			]
 		}
 	}
