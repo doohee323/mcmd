@@ -26,7 +26,7 @@ Depending on the predefined configuration file, you can run multiple commands in
 	   	-c "mcmd.json" 						// optional, configuration file, default: /mcmd-java/src/main/resources/mcmd.json
 	   	-l "logback.xml"					// optional, logback file, default: /mcmd-java/src/main/resources/logback.xml
 	   	
-	   	-j {"kali_aws": {					// instead of using json file(mcmd.json), can define commands like this,
+	   	-j {"kali_aws": {					// instead of using json file(mcmd.json), can define commands like this, All -j parameter should be url encoded.
 		    "hostInfo": {
 		      "host": "54.183.204.226",
 		      "port": 22,
