@@ -53,7 +53,7 @@ Depending on the predefined configuration file, you can run multiple commands in
 ```
 	   
 ```
-	2. run after installing debian file (mcmd-java_1.0.0_all.deb)
+	2. run after installing debian file ( ex) /mcmd-java/libs/mcmd-java_1.0.0_all.deb )
 	   /opt/mcmd-java/bin: executable files
 	   /etc/mcmd-java: configuratino files
 	   /var/log/mcmd-java: log files
