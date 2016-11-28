@@ -34,7 +34,7 @@ You can define commands which you want to run sequentially.
 				"tar cvf {{filename}}.tar *",
 				"_WAIT ':~$'",					// wait until getting ":~$" in stdout
 				"mv {{filename}}.tar {{filename}}.tar_bak",
-				"_FINISH"	// send signal finish work
+				"_CLOSE"	// send signal finish work
 			]
 		},
 		"work2": {

@@ -45,7 +45,7 @@ Depending on the predefined configuration file, you can run multiple commands in
 		        "_WAIT 'Domain:'",
 		        "topzone.biz",
 		        "_WAIT 'Scan complete.'",
-		        "_FINISH"
+		        "_CLOSE"
 		      ]
 		    }
 		  }
@@ -110,7 +110,7 @@ Depending on the predefined configuration file, you can run multiple commands in
 				"tar cvf {{filename}}.tar *",
 				"_WAIT ':~$'",					// wait until getting ":~$" in stdout
 				"mv {{filename}}.tar {{filename}}.tar_bak",
-				"_FINISH"	// send signal finish work
+				"_CLOSE"	// send signal finish work
 			]
 		},
 		"work2": {
@@ -123,7 +123,7 @@ Depending on the predefined configuration file, you can run multiple commands in
 	
 	cf) Predefined variables
 		_WAIT: wait for finishing previous command with expected string, ex) "_WAIT '/root/data$'" -> waiting for '/root/data$'
-		_FINISH: finish a running work under a work group
+		_CLOSE: finish a running work under a work group
 		_SLEEP: n second waiting, ex) _SLEEP 10 -> 10 seconds waiting
 		_REPLACE: replace a file contents like sed, ex) "_REPLACE \"aaa.sql\" \"bbb\" \"ccc\" "		-> replace all "bbb" string in aaa.sql with "ccc"
 		_PREFIX: insert string in front of a file, ex) "_PREFIX \"aaa.sql\" \"use test;\" "  -> insert "use test;" in front of aaa.sql

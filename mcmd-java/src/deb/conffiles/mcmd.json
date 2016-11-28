@@ -17,7 +17,7 @@
 				"cd /home/ubuntu",
 				"ls -al",
 				"_SLEEP 3",
-				"_FINISH"
+				"_CLOSE"
 			]
 		}
 	},
@@ -38,7 +38,7 @@
 				"_WAIT ':~$",
 				"_SLEEP 3",
 				"mv {{filename}}.tar {{filename}}.tar_bak",
-				"_FINISH"
+				"_CLOSE"
 			]
 		},
 		"work2": {
@@ -69,7 +69,7 @@
 				"_WAIT 'Domain:'",
 				"{{domain}}",
 				"_WAIT 'Scan complete.'",
-				"_FINISH"
+				"_CLOSE"
 			]
 		},
 		"work2": {
@@ -81,7 +81,7 @@
 				"sudo cp /root/.recon-ng/workspaces/{{domain}}/data.db /root/data/{{domain}}",
 				"sudo tar cvfz {{domain}}.zip {{domain}}",
 				"_WAIT '/root/data$'",
-				"_FINISH"
+				"_CLOSE"
 			]
 		},
 		"work3": {
@@ -137,7 +137,7 @@
 				"_SLEEP 1",
 				"sudo sqlite3 -header -csv /root/.recon-ng/workspaces/{{domain}}/data.db \"select * from vulnerabilities;\" > /root/.recon-ng/workspaces/{{domain}}/{{company}}_vulnerabilities.csv",
 				"_SLEEP 1",
-				"_FINISH"
+				"_CLOSE"
 			]
 		},
 		"work5": {
@@ -209,7 +209,7 @@
 				"_WAIT 'Domain:'",
 				"topzone.biz",
 				"_WAIT 'Scan complete.'",
-				"_FINISH"
+				"_CLOSE"
 			]
 		},
 		"work2": {
@@ -221,7 +221,7 @@
 				"sudo cp /root/.recon-ng/workspaces/topzone.biz/data.db /root/data/topzone.biz",
 				"sudo tar cvfz topzone.biz.zip topzone.biz",
 				"_WAIT '/root/data$'",
-				"_FINISH"
+				"_CLOSE"
 			]
 		},
 		"work3": {

@@ -14,7 +14,7 @@
 				"_WAIT ':~$';",
 				"_SLEEP 3;",
 				"mv {{filename}}.tar {{filename}}.tar_bak;",
-				"_FINISH;"
+				"_CLOSE;"
 			]
 		}
 	},
@@ -32,7 +32,7 @@
 				"tar cvf {{filename}}.tar *",
 				"_WAIT ':~$'",
 				"mv {{filename}}.tar {{filename}}.tar_bak",
-				"_FINISH"
+				"_CLOSE"
 			]
 		}
 	}	

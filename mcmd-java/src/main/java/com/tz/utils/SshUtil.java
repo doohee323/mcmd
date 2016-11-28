@@ -74,7 +74,7 @@ public class SshUtil {
                             strTime = strTime.replace(" ", "");
                             Thread.sleep(Integer.parseInt(strTime) * intervalBtw);
                         } else {
-                            if(command.contains("_FINISH")) {
+                            if(command.contains("_CLOSE")) {
                                 command = "echo " + command;
                             }
                             shellStream.println(command);
@@ -89,7 +89,7 @@ public class SshUtil {
                     }
                 }
             }
-            curSize = wait(out, result, "_FINISH", curSize);
+            curSize = wait(out, result, "_CLOSE", curSize);
         } catch (Exception e) {
             e.printStackTrace();
             log.error("ERROR: Connecting via shell to " + e.getMessage());
