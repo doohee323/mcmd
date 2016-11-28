@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang.time.StopWatch;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ public class Mcmd {
 
     static final Logger log = LoggerFactory.getLogger(Mcmd.class);
 
-    private Gson gson;
+    private static Gson gson;
     private JsonObject conf = null;
     public String _CurDir = null;
 
@@ -87,9 +87,15 @@ public class Mcmd {
 
             if (type.equals("ssh")) {
                 SshUtil util = new SshUtil();
-                util.maxWait = config.get("maxWait").getAsInt();
-                util.intervalBtw = config.get("intervalBtw").getAsInt();
-                util.intervalWait = config.get("intervalWait").getAsInt();
+                if (config.has("maxWait")) {
+                    util.maxWait = config.get("maxWait").getAsInt();
+                }
+                if (config.has("intervalBtw")) {
+                    util.intervalBtw = config.get("intervalBtw").getAsInt();
+                }
+                if (config.has("intervalWait")) {
+                    util.intervalWait = config.get("intervalWait").getAsInt();
+                }
                 return util.cmd(hostInfo, commands);
             } else if (type.equals("telnet")) {
                 TelnetUtil util = new TelnetUtil();
@@ -106,15 +112,10 @@ public class Mcmd {
         return null;
     }
 
-    public StringBuffer exec(String configStr, Map<String, Object> var) throws Exception {
-        try {
-            JsonObject config = gson.fromJson(configStr, JsonObject.class);
-            return exec("", config, var);
-        } catch (final Exception e) {
-            e.printStackTrace();
-            log.error(e.getMessage());
-            throw new Exception(e.getMessage());
-        }
+    public StringBuffer exec(String path, Map<String, Object> var) throws Exception {
+        String configStr = conf.get("config").toString();
+        JsonObject config = gson.fromJson(configStr, JsonObject.class);
+        return exec(path, config, var);
     }
 
     public String replaceVariables(String orgStr, Map<String, Object> param) {
@@ -180,11 +181,14 @@ public class Mcmd {
                 i++;
             }
         }
-        if(bJchk) {
+        if (bJchk) {
             for (int i = 0; i < args.length; i++) {
                 jsonStr += args[i];
             }
-            jsonStr = "{" + jsonStr.substring(jsonStr.indexOf("-j\"") + 2, jsonStr.length() - 1) + "}";
+            jsonStr = java.net.URLDecoder.decode(jsonStr, "UTF-8");
+            jsonStr = jsonStr.substring(jsonStr.indexOf("-j{") + 2, jsonStr.length() - 1);
+            jsonStr = jsonStr.replace("\t", "");
+            jsonStr = jsonStr.replace("\n\\", "\\");
         }
 
         System.out.println("////////////////// logConfigFile: " + logConfigFile);
@@ -213,12 +217,35 @@ public class Mcmd {
                     var.put(mpa[0], mpa[1]);
                 }
             }
+
             for (String commandPah : commandArry) {
                 mcmd.exec(commandPah, var).toString();
                 // log.debug(stdout);
             }
         } else {
-            mcmd.exec(jsonStr, var).toString();
+            try {
+                JsonObject config = gson.fromJson(jsonStr, JsonObject.class);
+                String parent = null;
+                JsonElement body = null;
+                String path = "";
+                for (Entry<String, JsonElement> e : config.entrySet()) {
+                    if (parent == null) {
+                        parent = e.getKey();
+                        body = config.get(parent);
+                    }
+                }
+                JsonObject config2 = gson.fromJson(body.toString(), JsonObject.class);
+                for (Entry<String, JsonElement> e : config2.entrySet()) {
+                    if (!e.getKey().equals("hostInfo")) {
+                        path = parent + "/" + e.getKey();
+                        mcmd.exec(path, config, var);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                log.error(e.getMessage());
+                throw new Exception(e.getMessage());
+            }
         }
 
         stopWatch.stop();
