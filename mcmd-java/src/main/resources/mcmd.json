@@ -91,18 +91,76 @@
 				"_SLEEP 10",
 				"scp -i {{keyfile}} {{username}}@{{host}}:/root/data/{{domain}}.zip _CURDIR/{{domain}}.zip",
 				"_SLEEP 10",
-				"_REPLACE `_CURDIR/{{company}}.sql` `PRAGMA foreign_keys=OFF;` `` ",
-				"_REPLACE `_CURDIR/{{company}}.sql` `BEGIN TRANSACTION;` `` ",
-				"_REPLACE `_CURDIR/{{company}}.sql` `\\`` `` ",
-				"_REPLACE `_CURDIR/{{company}}.sql` ` PRIMARY KEY` `` ",
-				"_REPLACE `_CURDIR/{{company}}.sql` `COMMIT;` `` ",
-				"_REPLACE `_CURDIR/{{company}}.sql` `CREATE TABLE contacts (first_name TEXT, middle_name TEXT, last_name TEXT, email TEXT, title TEXT, region TEXT, country TEXT, module TEXT);` 
-				`CREATE TABLE contacts (first_name TEXT, middle_name TEXT, last_name TEXT, email TEXT, title TEXT, region TEXT, country TEXT, module TEXT);ALTER TABLE contacts MODIFY COLUMN first_name TEXT CHARACTER SET utf8; ALTER TABLE contacts MODIFY COLUMN last_name TEXT CHARACTER SET utf8;` ",
-				"_REPLACE `_CURDIR/{{company}}.sql` `CREATE TABLE ` `CREATE TABLE IF NOT EXISTS ` ",
-				"_REPLACE `_CURDIR/{{company}}.sql` ` (` ` (target TEXT, run_date TEXT, ` ",
-				"_REPLACE `_CURDIR/{{company}}.sql` `VALUES(` `VALUES('{{company}}','{{run_date}}',` ",
-				"_PREFIX `_CURDIR/{{company}}.sql` ` create database IF NOT EXISTS {{schema}}; use {{schema}}; CREATE TABLE IF NOT EXISTS history (target TEXT, run_date TEXT, resource_path TEXT, template_path TEXT); INSERT INTO history VALUES('{{company}}','{{run_date}}','','');` ",
+				"_REPLACE \"_CURDIR/{{company}}.sql\" \"PRAGMA foreign_keys=OFF;\" \"\" ",
+				"_REPLACE \"_CURDIR/{{company}}.sql\" \"BEGIN TRANSACTION;\" \"\" ",
+				"_REPLACE \"_CURDIR/{{company}}.sql\" \"\\\"\" \"\" ",
+				"_REPLACE \"_CURDIR/{{company}}.sql\" \" PRIMARY KEY\" \"\" ",
+				"_REPLACE \"_CURDIR/{{company}}.sql\" \"COMMIT;\" \"\" ",
+				"_REPLACE \"_CURDIR/{{company}}.sql\" \"CREATE TABLE contacts (first_name TEXT, middle_name TEXT, last_name TEXT, email TEXT, title TEXT, region TEXT, country TEXT, module TEXT);\" 
+				\"CREATE TABLE contacts (first_name TEXT, middle_name TEXT, last_name TEXT, email TEXT, title TEXT, region TEXT, country TEXT, module TEXT);ALTER TABLE contacts MODIFY COLUMN first_name TEXT CHARACTER SET utf8; ALTER TABLE contacts MODIFY COLUMN last_name TEXT CHARACTER SET utf8;\" ",
+				"_REPLACE \"_CURDIR/{{company}}.sql\" \"CREATE TABLE \" \"CREATE TABLE IF NOT EXISTS \" ",
+				"_REPLACE \"_CURDIR/{{company}}.sql\" \" (\" \" (target TEXT, run_date TEXT, \" ",
+				"_REPLACE \"_CURDIR/{{company}}.sql\" \"VALUES(\" \"VALUES('{{company}}','{{run_date}}',\" ",
+				"_PREFIX \"_CURDIR/{{company}}.sql\" \" create database IF NOT EXISTS {{schema}}; use {{schema}}; CREATE TABLE IF NOT EXISTS history (target TEXT, run_date TEXT, resource_path TEXT, template_path TEXT); INSERT INTO history VALUES('{{company}}','{{run_date}}','','');\" ",
 				"/usr/local/Cellar/mysql/5.7.14/bin/mysql --user={{user}} --password={{password}} -h {{mysql_host}} < _CURDIR/{{company}}.sql "
+			]
+		}
+	},
+	"kali_aws2": {
+		"hostInfo": {
+			"host": "54.183.204.226",
+			"port": 22,
+			"username": "ec2-user",
+			"keyfile": "/Users/dhong/.ssh/topzone_ca1.pem"
+		},
+		"work1": {
+			"type": "ssh",
+			"commands": [
+				"cd /opt/discover",
+				"sudo bash discover.sh",
+				"_WAIT 'Choice:'",
+				"1",
+				"_WAIT 'Choice:'",
+				"1",
+				"_WAIT 'Company:'",
+				"Topzone",
+				"_WAIT 'Domain:'",
+				"topzone.biz",
+				"_WAIT 'Scan complete.'",
+				"_FINISH"
+			]
+		},
+		"work2": {
+			"type": "ssh",
+			"commands": [
+				"cd /root/data",
+				"sudo sqlite3 /root/.recon-ng/workspaces/topzone.biz/data.db .dump .quit > /home/ec2-user/Topzone.sql",
+				"_WAIT '/root/data$'",
+				"sudo cp /root/.recon-ng/workspaces/topzone.biz/data.db /root/data/topzone.biz",
+				"sudo tar cvfz topzone.biz.zip topzone.biz",
+				"_WAIT '/root/data$'",
+				"_FINISH"
+			]
+		},
+		"work3": {
+			"type": "shell",
+			"commands": [
+				"scp -i /Users/dhong/.ssh/topzone_ca1.pem ec2-user@54.183.204.226:/home/ec2-user/Topzone.sql _CURDIR/Topzone.sql",
+				"_SLEEP 10",
+				"scp -i /Users/dhong/.ssh/topzone_ca1.pem ec2-user@54.183.204.226:/root/data/topzone.biz.zip _CURDIR/topzone.biz.zip",
+				"_SLEEP 10",
+				"_REPLACE \"_CURDIR/Topzone.sql\" \"PRAGMA foreign_keys=OFF;\" \"\" ",
+				"_REPLACE \"_CURDIR/Topzone.sql\" \"BEGIN TRANSACTION;\" \"\" ",
+				"_REPLACE \"_CURDIR/Topzone.sql\" \"\\\"\" \"\" ",
+				"_REPLACE \"_CURDIR/Topzone.sql\" \" PRIMARY KEY\" \"\" ",
+				"_REPLACE \"_CURDIR/Topzone.sql\" \"COMMIT;\" \"\" ",
+				"_REPLACE \"_CURDIR/Topzone.sql\" \"CREATE TABLE contacts (first_name TEXT, middle_name TEXT, last_name TEXT, email TEXT, title TEXT, region TEXT, country TEXT, module TEXT);\" 
+				\"CREATE TABLE contacts (first_name TEXT, middle_name TEXT, last_name TEXT, email TEXT, title TEXT, region TEXT, country TEXT, module TEXT);ALTER TABLE contacts MODIFY COLUMN first_name TEXT CHARACTER SET utf8; ALTER TABLE contacts MODIFY COLUMN last_name TEXT CHARACTER SET utf8;\" ",
+				"_REPLACE \"_CURDIR/Topzone.sql\" \"CREATE TABLE \" \"CREATE TABLE IF NOT EXISTS \" ",
+				"_REPLACE \"_CURDIR/Topzone.sql\" \" (\" \" (target TEXT, run_date TEXT, \" ",
+				"_REPLACE \"_CURDIR/Topzone.sql\" \"VALUES(\" \"VALUES('Topzone','20161118',\" ",
+				"_PREFIX \"_CURDIR/Topzone.sql\" \" create database IF NOT EXISTS discover; use discover; CREATE TABLE IF NOT EXISTS history (target TEXT, run_date TEXT, resource_path TEXT, template_path TEXT); INSERT INTO history VALUES('Topzone','20161118','','');\" ",
+				"/usr/local/Cellar/mysql/5.7.14/bin/mysql --user=root --password=passwd123 -h localhost < _CURDIR/Topzone.sql "
 			]
 		}
 	}

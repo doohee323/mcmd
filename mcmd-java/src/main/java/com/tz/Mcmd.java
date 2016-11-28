@@ -77,7 +77,7 @@ public class Mcmd {
                 JsonElement v = entry.getValue();
                 _hostInfo.put(key, v.getAsString());
             }
-            _hostInfo.put("_curdir", _CurDir);
+            _hostInfo.put("_CURDIR", _CurDir);
             for (int j = 0; j < mCommand.size(); j++) {
                 String cmd = mCommand.get(j).getAsString();
                 cmd = replaceVariables(cmd, _hostInfo);
@@ -123,7 +123,11 @@ public class Mcmd {
             String key = entry.getKey();
             Object value = entry.getValue();
             if (value instanceof String) {
-                orgStr = orgStr.replace("{{" + key + "}}", value.toString());
+                if (key.equals("_CURDIR")) {
+                    orgStr = orgStr.replace(key, value.toString());
+                } else {
+                    orgStr = orgStr.replace("{{" + key + "}}", value.toString());
+                }
             } else {
                 orgStr = orgStr.replace("\"{{" + key + "}}\"", value.toString());
             }
