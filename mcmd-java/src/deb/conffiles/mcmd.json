@@ -104,6 +104,146 @@
 				"_PREFIX \"_CURDIR/{{company}}.sql\" \" create database IF NOT EXISTS {{schema}}; use {{schema}}; CREATE TABLE IF NOT EXISTS history (target TEXT, run_date TEXT, resource_path TEXT, template_path TEXT); INSERT INTO history VALUES('{{company}}','{{run_date}}','','');\" ",
 				"mysql --user={{user}} --password={{password}} -h {{mysql_host}} < _CURDIR/{{company}}.sql "
 			]
+		},
+		"work4": {
+			"type": "ssh",
+			"commands": [
+				"sudo chown -Rf {{username}}:{{username}} /root/.recon-ng/workspaces/{{domain}}",
+				"sudo sqlite3 -header -csv /root/.recon-ng/workspaces/{{domain}}/data.db \"select * from companies;\" > /root/.recon-ng/workspaces/{{domain}}/{{company}}_companies.csv",
+				"_SLEEP 1",
+				"sudo sqlite3 -header -csv /root/.recon-ng/workspaces/{{domain}}/data.db \"select * from contacts;\" > /root/.recon-ng/workspaces/{{domain}}/{{company}}_contacts.csv",
+				"_SLEEP 1",
+				"sudo sqlite3 -header -csv /root/.recon-ng/workspaces/{{domain}}/data.db \"select * from credentials;\" > /root/.recon-ng/workspaces/{{domain}}/{{company}}_credentials.csv",
+				"_SLEEP 1",
+				"sudo sqlite3 -header -csv /root/.recon-ng/workspaces/{{domain}}/data.db \"select * from dashboard;\" > /root/.recon-ng/workspaces/{{domain}}/{{company}}_dashboard.csv",
+				"_SLEEP 1",
+				"sudo sqlite3 -header -csv /root/.recon-ng/workspaces/{{domain}}/data.db \"select * from domains;\" > /root/.recon-ng/workspaces/{{domain}}/{{company}}_domains.csv",
+				"_SLEEP 1",
+				"sudo sqlite3 -header -csv /root/.recon-ng/workspaces/{{domain}}/data.db \"select * from hosts;\" > /root/.recon-ng/workspaces/{{domain}}/{{company}}_hosts.csv",
+				"_SLEEP 1",
+				"sudo sqlite3 -header -csv /root/.recon-ng/workspaces/{{domain}}/data.db \"select * from leaks;\" > /root/.recon-ng/workspaces/{{domain}}/{{company}}_leaks.csv",
+				"_SLEEP 1",
+				"sudo sqlite3 -header -csv /root/.recon-ng/workspaces/{{domain}}/data.db \"select * from locations;\" > /root/.recon-ng/workspaces/{{domain}}/{{company}}_locations.csv",
+				"_SLEEP 1",
+				"sudo sqlite3 -header -csv /root/.recon-ng/workspaces/{{domain}}/data.db \"select * from netblocks;\" > /root/.recon-ng/workspaces/{{domain}}/{{company}}_netblocks.csv",
+				"_SLEEP 1",
+				"sudo sqlite3 -header -csv /root/.recon-ng/workspaces/{{domain}}/data.db \"select * from ports;\" > /root/.recon-ng/workspaces/{{domain}}/{{company}}_ports.csv",
+				"_SLEEP 1",
+				"sudo sqlite3 -header -csv /root/.recon-ng/workspaces/{{domain}}/data.db \"select * from profiles;\" > /root/.recon-ng/workspaces/{{domain}}/{{company}}_profiles.csv",
+				"_SLEEP 1",
+				"sudo sqlite3 -header -csv /root/.recon-ng/workspaces/{{domain}}/data.db \"select * from pushpins;\" > /root/.recon-ng/workspaces/{{domain}}/{{company}}_pushpins.csv",
+				"_SLEEP 1",
+				"sudo sqlite3 -header -csv /root/.recon-ng/workspaces/{{domain}}/data.db \"select * from repositories;\" > /root/.recon-ng/workspaces/{{domain}}/{{company}}_repositories.csv",
+				"_SLEEP 1",
+				"sudo sqlite3 -header -csv /root/.recon-ng/workspaces/{{domain}}/data.db \"select * from vulnerabilities;\" > /root/.recon-ng/workspaces/{{domain}}/{{company}}_vulnerabilities.csv",
+				"_SLEEP 1",
+				"_FINISH"
+			]
+		},
+		"work5": {
+			"type": "shell",
+			"commands": [
+				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_companies.csv _CURDIR/{{company}}_companies.csv",
+				"_SLEEP 1",
+				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_contacts.csv _CURDIR/{{company}}_contacts.csv",
+				"_SLEEP 1",
+				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_credentials.csv _CURDIR/{{company}}_credentials.csv",
+				"_SLEEP 1",
+				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_dashboard.csv _CURDIR/{{company}}_dashboard.csv",
+				"_SLEEP 1",
+				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_domains.csv _CURDIR/{{company}}_domains.csv",
+				"_SLEEP 1",
+				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_hosts.csv _CURDIR/{{company}}_hosts.csv",
+				"_SLEEP 1",
+				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_leaks.csv _CURDIR/{{company}}_leaks.csv",
+				"_SLEEP 1",
+				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_locations.csv _CURDIR/{{company}}_locations.csv",
+				"_SLEEP 1",
+				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_netblocks.csv _CURDIR/{{company}}_netblocks.csv",
+				"_SLEEP 1",
+				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_ports.csv _CURDIR/{{company}}_ports.csv",
+				"_SLEEP 1",
+				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_profiles.csv _CURDIR/{{company}}_profiles.csv",
+				"_SLEEP 1",
+				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_pushpins.csv _CURDIR/{{company}}_pushpins.csv",
+				"_SLEEP 1",
+				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_repositories.csv _CURDIR/{{company}}_repositories.csv",
+				"_SLEEP 1",
+				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_vulnerabilities.csv _CURDIR/{{company}}_vulnerabilities.csv",
+				"_SLEEP 1",
+				"/usr/local/bin/mongoimport --db {{company}} --collection companies --type csv --headerline --file _CURDIR/{{company}}_companies.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection contacts --type csv --headerline --file _CURDIR/{{company}}_contacts.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection credentials --type csv --headerline --file _CURDIR/{{company}}_credentials.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection dashboard --type csv --headerline --file _CURDIR/{{company}}_dashboard.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection domains --type csv --headerline --file _CURDIR/{{company}}_domains.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection hosts --type csv --headerline --file _CURDIR/{{company}}_hosts.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection leaks --type csv --headerline --file _CURDIR/{{company}}_leaks.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection locations --type csv --headerline --file _CURDIR/{{company}}_locations.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection netblocks --type csv --headerline --file _CURDIR/{{company}}_netblocks.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection ports --type csv --headerline --file _CURDIR/{{company}}_ports.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection profiles --type csv --headerline --file _CURDIR/{{company}}_profiles.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection pushpins --type csv --headerline --file _CURDIR/{{company}}_pushpins.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection repositories --type csv --headerline --file _CURDIR/{{company}}_repositories.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection vulnerabilities --type csv --headerline --file _CURDIR/{{company}}_vulnerabilities.csv"
+			]
+		}
+	},
+	"kali_aws2": {
+		"hostInfo": {
+			"host": "54.183.204.226",
+			"port": 22,
+			"username": "ec2-user",
+			"keyfile": "/Users/dhong/.ssh/topzone_ca1.pem"
+		},
+		"work1": {
+			"type": "ssh",
+			"commands": [
+				"cd /opt/discover",
+				"sudo bash discover.sh",
+				"_WAIT 'Choice:'",
+				"1",
+				"_WAIT 'Choice:'",
+				"1",
+				"_WAIT 'Company:'",
+				"Topzone",
+				"_WAIT 'Domain:'",
+				"topzone.biz",
+				"_WAIT 'Scan complete.'",
+				"_FINISH"
+			]
+		},
+		"work2": {
+			"type": "ssh",
+			"commands": [
+				"cd /root/data",
+				"sudo sqlite3 /root/.recon-ng/workspaces/topzone.biz/data.db .dump .quit > /home/ec2-user/Topzone.sql",
+				"_WAIT '/root/data$'",
+				"sudo cp /root/.recon-ng/workspaces/topzone.biz/data.db /root/data/topzone.biz",
+				"sudo tar cvfz topzone.biz.zip topzone.biz",
+				"_WAIT '/root/data$'",
+				"_FINISH"
+			]
+		},
+		"work3": {
+			"type": "shell",
+			"commands": [
+				"scp -i /Users/dhong/.ssh/topzone_ca1.pem ec2-user@54.183.204.226:/home/ec2-user/Topzone.sql _CURDIR/Topzone.sql",
+				"_SLEEP 10",
+				"scp -i /Users/dhong/.ssh/topzone_ca1.pem ec2-user@54.183.204.226:/root/data/topzone.biz.zip _CURDIR/topzone.biz.zip",
+				"_SLEEP 10",
+				"_REPLACE \"_CURDIR/Topzone.sql\" \"PRAGMA foreign_keys=OFF;\" \"\" ",
+				"_REPLACE \"_CURDIR/Topzone.sql\" \"BEGIN TRANSACTION;\" \"\" ",
+				"_REPLACE \"_CURDIR/Topzone.sql\" \"\\\"\" \"\" ",
+				"_REPLACE \"_CURDIR/Topzone.sql\" \" PRIMARY KEY\" \"\" ",
+				"_REPLACE \"_CURDIR/Topzone.sql\" \"COMMIT;\" \"\" ",
+				"_REPLACE \"_CURDIR/Topzone.sql\" \"CREATE TABLE contacts (first_name TEXT, middle_name TEXT, last_name TEXT, email TEXT, title TEXT, region TEXT, country TEXT, module TEXT);\" 
+				\"CREATE TABLE contacts (first_name TEXT, middle_name TEXT, last_name TEXT, email TEXT, title TEXT, region TEXT, country TEXT, module TEXT);ALTER TABLE contacts MODIFY COLUMN first_name TEXT CHARACTER SET utf8; ALTER TABLE contacts MODIFY COLUMN last_name TEXT CHARACTER SET utf8;\" ",
+				"_REPLACE \"_CURDIR/Topzone.sql\" \"CREATE TABLE \" \"CREATE TABLE IF NOT EXISTS \" ",
+				"_REPLACE \"_CURDIR/Topzone.sql\" \" (\" \" (target TEXT, run_date TEXT, \" ",
+				"_REPLACE \"_CURDIR/Topzone.sql\" \"VALUES(\" \"VALUES('Topzone','20161118',\" ",
+				"_PREFIX \"_CURDIR/Topzone.sql\" \" create database IF NOT EXISTS discover; use discover; CREATE TABLE IF NOT EXISTS history (target TEXT, run_date TEXT, resource_path TEXT, template_path TEXT); INSERT INTO history VALUES('Topzone','20161118','','');\" ",
+				"/usr/local/Cellar/mysql/5.7.14/bin/mysql --user=root --password=passwd123 -h localhost < _CURDIR/Topzone.sql "
+			]
 		}
 	}
 }

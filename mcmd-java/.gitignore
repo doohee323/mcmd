@@ -19,3 +19,7 @@ logs/
 
 .settings
 /data.db
+
+*.csv
+*.zip
+*.sql
