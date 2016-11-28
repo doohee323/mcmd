@@ -23,6 +23,31 @@
 	   	-m "filename=data;filename2=data2" 	// optional, mapping variables for replacement
 	   	-c "mcmd.json" 						// optional, configuration file, default: /mcmd-java/src/main/resources/mcmd.json
 	   	-l "logback.xml"					// optional, logback file, default: /mcmd-java/src/main/resources/logback.xml
+	   	
+	   	-j {"kali_aws": {					// instead of using json file(mcmd.json), can define commands like this,
+		    "hostInfo": {
+		      "host": "54.183.204.226",
+		      "port": 22,
+		      "username": "ec2-user",
+		      "keyfile": "/Users/dhong/.ssh/topzone_ca1.pem"
+		    },
+		    "work1": {
+		      "type": "ssh",
+		      "commands": [
+		        "cd /opt/discover",
+		        "sudo bash discover.sh",
+		        "_WAIT 'Choice:'",
+		        "1",
+		        "_WAIT 'Company:'",
+		        "Topzone",
+		        "_WAIT 'Domain:'",
+		        "topzone.biz",
+		        "_WAIT 'Scan complete.'",
+		        "_FINISH"
+		      ]
+		    }
+		  }
+		}
 ```
 	   
 ```
