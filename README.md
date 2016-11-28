@@ -1,4 +1,6 @@
-# Multiple command on ssh / telnet / shell
+# Multiple commands in ssh / telnet / shell
+
+Depending on the predefined configuration file, you can run multiple commands in ssh / telnet / shell and it will work as a manual operation that will follow the expected results from the console.
 
 ## Build
 ```
