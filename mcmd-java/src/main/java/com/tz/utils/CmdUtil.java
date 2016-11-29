@@ -25,9 +25,9 @@ public class CmdUtil {
 
     static final Logger log = LoggerFactory.getLogger(CmdUtil.class);
 
-    public int maxWait = 40;
-    public int intervalBtw = 500;
-    public int intervalWait = 2000;
+    public int _MAXWAIT = 40;
+    public int _INTERVALBTW = 500;
+    public int _INTERVALWAIT = 2000;
     public String _CurDir = null;
 
     public CmdUtil() {
@@ -84,14 +84,14 @@ public class CmdUtil {
 
     /**
      */
-    public StringBuffer cmd(List<String> commands) throws Exception {
+    public StringBuffer cmd(List<String> _COMMANDS) throws Exception {
         StringBuffer result = new StringBuffer();
-        for (String command : commands) {
+        for (String command : _COMMANDS) {
             if (!command.equals("")) {
                 if (command.startsWith("_SLEEP ")) {
                     String strTime = command.substring("_SLEEP ".length(), command.length()).trim();
                     strTime = strTime.replace(" ", "");
-                    Thread.sleep(Integer.parseInt(strTime) * intervalBtw);
+                    Thread.sleep(Integer.parseInt(strTime) * _INTERVALBTW);
                 } else if (command.startsWith("_REPLACE ")) {
                     command = command.replace("\"\\\"", "\"`");
                     String strArry[] = command.split("\"");
@@ -142,7 +142,7 @@ public class CmdUtil {
                         log.debug("" + strReturn);
                     }
                     result.append(strReturn);
-                    Thread.sleep(intervalBtw);
+                    Thread.sleep(_INTERVALBTW);
                 }
             }
         }

@@ -31,12 +31,12 @@ func fromJson(file string) (Config, error) {
 	}
 	//fmt.Println(conf)
 
-	//	hostInfo := getMap(conf.Node["hostInfo"])
-	//	fmt.Println(" [========>] %v", hostInfo)
+	//	_HOSTINFO := getMap(conf.Node["_HOSTINFO"])
+	//	fmt.Println(" [========>] %v", _HOSTINFO)
 	//
 	//	work1 := getMap(conf.Node["work1"])
 	//	fmt.Println(" [========>] %v", work1)
-	//	fmt.Println(" [========>] %v", work1["commands"])
+	//	fmt.Println(" [========>] %v", work1["_COMMANDS"])
 
 	return conf, nil
 }
@@ -65,12 +65,12 @@ func (conf *Config) getArry(path string) []string {
 			if i == 0 {
 				m2 = getMap(conf.Node[spl[i]])
 			} else {
-				if spl[i] == "commands" {
+				if spl[i] == "_COMMANDS" {
 					m2[spl[i]] = m2[spl[i]][1 : len(m2[spl[i]])-1]
-					commands := s.Split(m2[spl[i]], ";")
-					arry = commands
+					_COMMANDS := s.Split(m2[spl[i]], ";")
+					arry = _COMMANDS
 					for j := range arry {
-						if s.Contains(arry[j], "_WAIT") == true || s.Contains(arry[j], "_FINSIH") == true {
+						if s.Contains(arry[j], "_WAIT") == true || s.Contains(arry[j], "_CLOSE") == true {
 							arry[j] = "echo " + arry[j]
 						} else if s.Contains(arry[j], "_SLEEP2") == true {
 							strTime := arry[j][len("_SLEEP2 "):len(arry[j])]

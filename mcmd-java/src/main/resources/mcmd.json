@@ -1,19 +1,19 @@
 {
-	"config": {
-		"maxWait": 1000,
-		"intervalBtw": 1000,
-		"intervalWait": 2000
+	"_CONFIG": {
+		"_MAXWAIT": 1000,
+		"_INTERVALBTW": 1000,
+		"_INTERVALWAIT": 2000
 	},
 	"mcmd0": {
-		"hostInfo": {
-			"host": "topzone.biz",
-			"port": 22,
-			"username": "ubuntu",
-			"keyfile": "/Users/dhong/.ssh/topzone_ca1.pem"
+		"_HOSTINFO": {
+			"_HOST": "topzone.biz",
+			"_PORT": 22,
+			"_USERNAME": "ubuntu",
+			"_KEYFILE": "/Users/dhong/.ssh/topzone_ca1.pem"
 		},
 		"work1": {
-			"type": "ssh",
-			"commands": [
+			"_TYPE": "ssh",
+			"_COMMANDS": [
 				"cd /home/ubuntu",
 				"ls -al",
 				"_SLEEP 3",
@@ -22,15 +22,15 @@
 		}
 	},
 	"mcmd1": {
-		"hostInfo": {
-			"host": "topzone.biz",
-			"port": 22,
-			"username": "ubuntu",
-			"keyfile": "/Users/dhong/.ssh/topzone_ca1.pem"
+		"_HOSTINFO": {
+			"_HOST": "topzone.biz",
+			"_PORT": 22,
+			"_USERNAME": "ubuntu",
+			"_KEYFILE": "/Users/dhong/.ssh/topzone_ca1.pem"
 		},
 		"work1": {
-			"type": "ssh",
-			"commands": [
+			"_TYPE": "ssh",
+			"_COMMANDS": [
 				"cd /home/ubuntu",
 				"rm -Rf {{filename}}.tar",
 				"rm -Rf {{filename}}.tar_bak",
@@ -42,22 +42,22 @@
 			]
 		},
 		"work2": {
-			"type": "shell",
-			"commands": [
-				"scp -i {{keyfile}} {{username}}@{{host}}:/home/ubuntu/{{filename}}.tar_bak ."
+			"_TYPE": "shell",
+			"_COMMANDS": [
+				"scp -i {{_KEYFILE}} {{_USERNAME}}@{{_HOST}}:/home/ubuntu/{{filename}}.tar_bak ."
 			]
 		}
 	},
 	"kali_aws": {
-		"hostInfo": {
-			"host": "54.183.204.226",
-			"port": 22,
-			"username": "ec2-user",
-			"keyfile": "/Users/dhong/.ssh/topzone_ca1.pem"
+		"_HOSTINFO": {
+			"_HOST": "54.183.204.226",
+			"_PORT": 22,
+			"_USERNAME": "ec2-user",
+			"_KEYFILE": "/Users/dhong/.ssh/topzone_ca1.pem"
 		},
 		"work1": {
-			"type": "ssh",
-			"commands": [
+			"_TYPE": "ssh",
+			"_COMMANDS": [
 				"cd /opt/discover",
 				"sudo bash discover.sh",
 				"_WAIT 'Choice:'",
@@ -73,8 +73,8 @@
 			]
 		},
 		"work2": {
-			"type": "ssh",
-			"commands": [
+			"_TYPE": "ssh",
+			"_COMMANDS": [
 				"cd /root/data",
 				"sudo sqlite3 /root/.recon-ng/workspaces/{{domain}}/data.db .dump .quit > /home/ec2-user/{{company}}.sql",
 				"_WAIT '/root/data$'",
@@ -85,11 +85,11 @@
 			]
 		},
 		"work3": {
-			"type": "shell",
-			"commands": [
-				"scp -i {{keyfile}} {{username}}@{{host}}:/home/ec2-user/{{company}}.sql _CURDIR/{{company}}.sql",
+			"_TYPE": "shell",
+			"_COMMANDS": [
+				"scp -i {{_KEYFILE}} {{_USERNAME}}@{{_HOST}}:/home/ec2-user/{{company}}.sql _CURDIR/{{company}}.sql",
 				"_SLEEP 10",
-				"scp -i {{keyfile}} {{username}}@{{host}}:/root/data/{{domain}}.zip _CURDIR/{{domain}}.zip",
+				"scp -i {{_KEYFILE}} {{_USERNAME}}@{{_HOST}}:/root/data/{{domain}}.zip _CURDIR/{{domain}}.zip",
 				"_SLEEP 10",
 				"_REPLACE \"_CURDIR/{{company}}.sql\" \"PRAGMA foreign_keys=OFF;\" \"\" ",
 				"_REPLACE \"_CURDIR/{{company}}.sql\" \"BEGIN TRANSACTION;\" \"\" ",
@@ -106,9 +106,9 @@
 			]
 		},
 		"work4": {
-			"type": "ssh",
-			"commands": [
-				"sudo chown -Rf {{username}}:{{username}} /root/.recon-ng/workspaces/{{domain}}",
+			"_TYPE": "ssh",
+			"_COMMANDS": [
+				"sudo chown -Rf {{_USERNAME}}:{{_USERNAME}} /root/.recon-ng/workspaces/{{domain}}",
 				"sudo sqlite3 -header -csv /root/.recon-ng/workspaces/{{domain}}/data.db \"select * from companies;\" > /root/.recon-ng/workspaces/{{domain}}/{{company}}_companies.csv",
 				"sudo sqlite3 -header -csv /root/.recon-ng/workspaces/{{domain}}/data.db \"select * from contacts;\" > /root/.recon-ng/workspaces/{{domain}}/{{company}}_contacts.csv",
 				"sudo sqlite3 -header -csv /root/.recon-ng/workspaces/{{domain}}/data.db \"select * from credentials;\" > /root/.recon-ng/workspaces/{{domain}}/{{company}}_credentials.csv",
@@ -127,49 +127,49 @@
 			]
 		},
 		"work5": {
-			"type": "shell",
-			"commands": [
-				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_companies.csv _CURDIR/{{company}}_companies.csv",
-				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_contacts.csv _CURDIR/{{company}}_contacts.csv",
-				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_credentials.csv _CURDIR/{{company}}_credentials.csv",
-				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_dashboard.csv _CURDIR/{{company}}_dashboard.csv",
-				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_domains.csv _CURDIR/{{company}}_domains.csv",
-				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_hosts.csv _CURDIR/{{company}}_hosts.csv",
-				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_leaks.csv _CURDIR/{{company}}_leaks.csv",
-				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_locations.csv _CURDIR/{{company}}_locations.csv",
-				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_netblocks.csv _CURDIR/{{company}}_netblocks.csv",
-				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_ports.csv _CURDIR/{{company}}_ports.csv",
-				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_profiles.csv _CURDIR/{{company}}_profiles.csv",
-				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_pushpins.csv _CURDIR/{{company}}_pushpins.csv",
-				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_repositories.csv _CURDIR/{{company}}_repositories.csv",
-				"scp -i {{keyfile}} {{username}}@{{host}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_vulnerabilities.csv _CURDIR/{{company}}_vulnerabilities.csv",
-				"/usr/local/bin/mongoimport --db {{company}} --collection companies --type csv --headerline --file _CURDIR/{{company}}_companies.csv",
-				"/usr/local/bin/mongoimport --db {{company}} --collection contacts --type csv --headerline --file _CURDIR/{{company}}_contacts.csv",
-				"/usr/local/bin/mongoimport --db {{company}} --collection credentials --type csv --headerline --file _CURDIR/{{company}}_credentials.csv",
-				"/usr/local/bin/mongoimport --db {{company}} --collection dashboard --type csv --headerline --file _CURDIR/{{company}}_dashboard.csv",
-				"/usr/local/bin/mongoimport --db {{company}} --collection domains --type csv --headerline --file _CURDIR/{{company}}_domains.csv",
-				"/usr/local/bin/mongoimport --db {{company}} --collection hosts --type csv --headerline --file _CURDIR/{{company}}_hosts.csv",
-				"/usr/local/bin/mongoimport --db {{company}} --collection leaks --type csv --headerline --file _CURDIR/{{company}}_leaks.csv",
-				"/usr/local/bin/mongoimport --db {{company}} --collection locations --type csv --headerline --file _CURDIR/{{company}}_locations.csv",
-				"/usr/local/bin/mongoimport --db {{company}} --collection netblocks --type csv --headerline --file _CURDIR/{{company}}_netblocks.csv",
-				"/usr/local/bin/mongoimport --db {{company}} --collection ports --type csv --headerline --file _CURDIR/{{company}}_ports.csv",
-				"/usr/local/bin/mongoimport --db {{company}} --collection profiles --type csv --headerline --file _CURDIR/{{company}}_profiles.csv",
-				"/usr/local/bin/mongoimport --db {{company}} --collection pushpins --type csv --headerline --file _CURDIR/{{company}}_pushpins.csv",
-				"/usr/local/bin/mongoimport --db {{company}} --collection repositories --type csv --headerline --file _CURDIR/{{company}}_repositories.csv",
-				"/usr/local/bin/mongoimport --db {{company}} --collection vulnerabilities --type csv --headerline --file _CURDIR/{{company}}_vulnerabilities.csv"
+			"_TYPE": "shell",
+			"_COMMANDS": [
+				"scp -i {{_KEYFILE}} {{_USERNAME}}@{{_HOST}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_companies.csv _CURDIR/{{company}}_companies.csv",
+				"scp -i {{_KEYFILE}} {{_USERNAME}}@{{_HOST}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_contacts.csv _CURDIR/{{company}}_contacts.csv",
+				"scp -i {{_KEYFILE}} {{_USERNAME}}@{{_HOST}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_credentials.csv _CURDIR/{{company}}_credentials.csv",
+				"scp -i {{_KEYFILE}} {{_USERNAME}}@{{_HOST}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_dashboard.csv _CURDIR/{{company}}_dashboard.csv",
+				"scp -i {{_KEYFILE}} {{_USERNAME}}@{{_HOST}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_domains.csv _CURDIR/{{company}}_domains.csv",
+				"scp -i {{_KEYFILE}} {{_USERNAME}}@{{_HOST}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_hosts.csv _CURDIR/{{company}}_hosts.csv",
+				"scp -i {{_KEYFILE}} {{_USERNAME}}@{{_HOST}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_leaks.csv _CURDIR/{{company}}_leaks.csv",
+				"scp -i {{_KEYFILE}} {{_USERNAME}}@{{_HOST}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_locations.csv _CURDIR/{{company}}_locations.csv",
+				"scp -i {{_KEYFILE}} {{_USERNAME}}@{{_HOST}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_netblocks.csv _CURDIR/{{company}}_netblocks.csv",
+				"scp -i {{_KEYFILE}} {{_USERNAME}}@{{_HOST}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_ports.csv _CURDIR/{{company}}_ports.csv",
+				"scp -i {{_KEYFILE}} {{_USERNAME}}@{{_HOST}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_profiles.csv _CURDIR/{{company}}_profiles.csv",
+				"scp -i {{_KEYFILE}} {{_USERNAME}}@{{_HOST}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_pushpins.csv _CURDIR/{{company}}_pushpins.csv",
+				"scp -i {{_KEYFILE}} {{_USERNAME}}@{{_HOST}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_repositories.csv _CURDIR/{{company}}_repositories.csv",
+				"scp -i {{_KEYFILE}} {{_USERNAME}}@{{_HOST}}:/root/.recon-ng/workspaces/{{domain}}/{{company}}_vulnerabilities.csv _CURDIR/{{company}}_vulnerabilities.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection companies --_TYPE csv --headerline --file _CURDIR/{{company}}_companies.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection contacts --_TYPE csv --headerline --file _CURDIR/{{company}}_contacts.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection credentials --_TYPE csv --headerline --file _CURDIR/{{company}}_credentials.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection dashboard --_TYPE csv --headerline --file _CURDIR/{{company}}_dashboard.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection domains --_TYPE csv --headerline --file _CURDIR/{{company}}_domains.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection hosts --_TYPE csv --headerline --file _CURDIR/{{company}}_hosts.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection leaks --_TYPE csv --headerline --file _CURDIR/{{company}}_leaks.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection locations --_TYPE csv --headerline --file _CURDIR/{{company}}_locations.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection netblocks --_TYPE csv --headerline --file _CURDIR/{{company}}_netblocks.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection ports --_TYPE csv --headerline --file _CURDIR/{{company}}_ports.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection profiles --_TYPE csv --headerline --file _CURDIR/{{company}}_profiles.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection pushpins --_TYPE csv --headerline --file _CURDIR/{{company}}_pushpins.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection repositories --_TYPE csv --headerline --file _CURDIR/{{company}}_repositories.csv",
+				"/usr/local/bin/mongoimport --db {{company}} --collection vulnerabilities --_TYPE csv --headerline --file _CURDIR/{{company}}_vulnerabilities.csv"
 			]
 		}
 	},
 	"kali_aws2": {
-		"hostInfo": {
-			"host": "54.183.204.226",
-			"port": 22,
-			"username": "ec2-user",
-			"keyfile": "/Users/dhong/.ssh/topzone_ca1.pem"
+		"_HOSTINFO": {
+			"_HOST": "54.183.204.226",
+			"_PORT": 22,
+			"_USERNAME": "ec2-user",
+			"_KEYFILE": "/Users/dhong/.ssh/topzone_ca1.pem"
 		},
 		"work1": {
-			"type": "ssh",
-			"commands": [
+			"_TYPE": "ssh",
+			"_COMMANDS": [
 				"cd /opt/discover",
 				"sudo bash discover.sh",
 				"_WAIT 'Choice:'",
@@ -185,8 +185,8 @@
 			]
 		},
 		"work2": {
-			"type": "ssh",
-			"commands": [
+			"_TYPE": "ssh",
+			"_COMMANDS": [
 				"cd /root/data",
 				"sudo sqlite3 /root/.recon-ng/workspaces/topzone.biz/data.db .dump .quit > /home/ec2-user/Topzone.sql",
 				"_WAIT '/root/data$'",
@@ -197,8 +197,8 @@
 			]
 		},
 		"work3": {
-			"type": "shell",
-			"commands": [
+			"_TYPE": "shell",
+			"_COMMANDS": [
 				"scp -i /Users/dhong/.ssh/topzone_ca1.pem ec2-user@54.183.204.226:/home/ec2-user/Topzone.sql _CURDIR/Topzone.sql",
 				"_SLEEP 10",
 				"scp -i /Users/dhong/.ssh/topzone_ca1.pem ec2-user@54.183.204.226:/root/data/topzone.biz.zip _CURDIR/topzone.biz.zip",

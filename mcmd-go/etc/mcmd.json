@@ -1,13 +1,13 @@
 {
 	"mcmd1": {
-		"hostInfo": {
-			"host": "topzone.biz",
-			"port": "22",
-			"username": "ubuntu",
-			"keyfile": "/Users/dhong/.ssh/topzone_ca1.pem"
+		"_HOSTINFO": {
+			"_HOST": "topzone.biz",
+			"_PORT": "22",
+			"_USERNAME": "ubuntu",
+			"_KEYFILE": "/Users/dhong/.ssh/topzone_ca1.pem"
 		},
 		"work1": {
-			"commands": [
+			"_COMMANDS": [
 				"cd /vagrant;",
 				"rm -Rf {{filename}}.tar_bak;",
 				"tar cvf {{filename}}.tar *;",
@@ -19,14 +19,14 @@
 		}
 	},
 	"mcmd2": {
-		"hostInfo": {
-			"host": "topzone.biz",
-			"port": 22,
-			"username": "ubuntu",
+		"_HOSTINFO": {
+			"_HOST": "topzone.biz",
+			"_PORT": 22,
+			"_USERNAME": "ubuntu",
 			"key_file": "/Users/dhong/.ssh/1topzone_ca1.pem"
 		},
 		"work1": {
-			"commands": [
+			"_COMMANDS": [
 				"cd /vagrant",
 				"rm -Rf {{filename}}.tar_bak",
 				"tar cvf {{filename}}.tar *",

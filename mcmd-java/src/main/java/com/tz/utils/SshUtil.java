@@ -23,11 +23,11 @@ public class SshUtil {
 
     static final Logger log = LoggerFactory.getLogger(SshUtil.class);
 
-    public int maxWait = 1000;
-    public int intervalBtw = 500;
-    public int intervalWait = 2000;
+    public int _MAXWAIT = 1000;
+    public int _INTERVALBTW = 500;
+    public int _INTERVALWAIT = 2000;
 
-    public StringBuffer cmd(JsonObject hostInfo, List<String> commands) throws Exception {
+    public StringBuffer cmd(JsonObject _HOSTINFO, List<String> _COMMANDS) throws Exception {
         StringBuffer result = new StringBuffer();
         Channel channel = null;
         Session session = null;
@@ -35,19 +35,19 @@ public class SshUtil {
         PrintStream ps = null;
         PrintStream shellStream = null;
         try {
-            String username = hostInfo.get("username").getAsString();
-            String host = hostInfo.get("host").getAsString();
-            String keyfile = hostInfo.get("keyfile").getAsString();
-            int port = hostInfo.get("port").getAsInt();
-            File privateKey = new File(keyfile);
+            String _USERNAME = _HOSTINFO.get("_USERNAME").getAsString();
+            String _HOST = _HOSTINFO.get("_HOST").getAsString();
+            String _KEYFILE = _HOSTINFO.get("_KEYFILE").getAsString();
+            int _PORT = _HOSTINFO.get("_PORT").getAsInt();
+            File privateKey = new File(_KEYFILE);
 
             JSch jsch = new JSch();
             jsch.addIdentity(privateKey.getAbsolutePath());
-            session = jsch.getSession(username, host, port);
+            session = jsch.getSession(_USERNAME, _HOST, _PORT);
             session.setDaemonThread(true);
-            Properties config = new Properties();
-            config.put("StrictHostKeyChecking", "no");
-            session.setConfig(config);
+            Properties _CONFIG = new Properties();
+            _CONFIG.put("StrictHostKeyChecking", "no");
+            session.setConfig(_CONFIG);
             session.connect();
 
             out = new ByteArrayOutputStream();
@@ -60,7 +60,7 @@ public class SshUtil {
             channel.connect();
 
             int curSize = 0;
-            for (String command : commands) {
+            for (String command : _COMMANDS) {
                 if (!command.equals("")) {
                     result = new StringBuffer(out.toString());
                     if (command.indexOf("_WAIT ") > -1) {
@@ -72,14 +72,14 @@ public class SshUtil {
                         if (command.startsWith("_SLEEP ")) {
                             String strTime = command.substring("_SLEEP ".length(), command.length()).trim();
                             strTime = strTime.replace(" ", "");
-                            Thread.sleep(Integer.parseInt(strTime) * intervalBtw);
+                            Thread.sleep(Integer.parseInt(strTime) * _INTERVALBTW);
                         } else {
                             if(command.contains("_CLOSE")) {
                                 command = "echo " + command;
                             }
                             shellStream.println(command);
                             shellStream.flush();
-                            Thread.sleep(intervalBtw);
+                            Thread.sleep(_INTERVALBTW);
                         }
                         String showStr = result.substring(curSize, result.length()).trim();
                         if (!showStr.equals("")) {
@@ -115,9 +115,9 @@ public class SshUtil {
         boolean bGo = true;
         int nCnt = 0;
         while (bGo) {
-            Thread.sleep(intervalWait);
+            Thread.sleep(_INTERVALWAIT);
             result = new StringBuffer(out.toString());
-            if (nCnt > maxWait) {
+            if (nCnt > _MAXWAIT) {
                 bGo = false;
             }
             String showStr = result.substring(curSize, result.length()).trim();
@@ -134,12 +134,12 @@ public class SshUtil {
         return curSize;
     }
 
-    public void cmd(JsonObject hostInfo, String command) throws Exception {
-        String username = hostInfo.get("username").getAsString();
-        String host = hostInfo.get("host").getAsString();
-        String keyfile = hostInfo.get("keyfile").getAsString();
-        int port = hostInfo.get("port").getAsInt();
-        File privateKey = new File(keyfile);
+    public void cmd(JsonObject _HOSTINFO, String command) throws Exception {
+        String _USERNAME = _HOSTINFO.get("_USERNAME").getAsString();
+        String _HOST = _HOSTINFO.get("_HOST").getAsString();
+        String _KEYFILE = _HOSTINFO.get("_KEYFILE").getAsString();
+        int _PORT = _HOSTINFO.get("_PORT").getAsInt();
+        File privateKey = new File(_KEYFILE);
         FileOutputStream fos = null;
         Channel channel = null;
         Session session = null;
@@ -147,11 +147,11 @@ public class SshUtil {
         try {
             JSch jsch = new JSch();
             jsch.addIdentity(privateKey.getAbsolutePath());
-            session = jsch.getSession(username, host, port);
+            session = jsch.getSession(_USERNAME, _HOST, _PORT);
             session.setDaemonThread(true);
-            Properties config = new Properties();
-            config.put("StrictHostKeyChecking", "no");
-            session.setConfig(config);
+            Properties _CONFIG = new Properties();
+            _CONFIG.put("StrictHostKeyChecking", "no");
+            session.setConfig(_CONFIG);
             session.connect();
 
             channel = session.openChannel("exec");
@@ -188,7 +188,7 @@ public class SshUtil {
                     break;
                 }
                 try {
-                    Thread.sleep(intervalBtw);
+                    Thread.sleep(_INTERVALBTW);
                 } catch (Exception e) {
                     log.error(e.getMessage());
                     throw new Exception(e.getMessage());
@@ -211,24 +211,24 @@ public class SshUtil {
     }
 
     public static void main(String[] arg) {
-        String username = "ec2-user";
-        String host = "ec2-54-162-101-184.compute-1.amazonaws.com";
-        String keyfile = "/securedKeys/awskey1.pem";
-        int port = 22;
+        String _USERNAME = "ec2-user";
+        String _HOST = "ec2-54-162-101-184.compute-1.amazonaws.com";
+        String _KEYFILE = "/securedKeys/awskey1.pem";
+        int _PORT = 22;
 
-        JsonObject hostInfo = new JsonObject();
-        hostInfo.addProperty("username", username);
-        hostInfo.addProperty("host", host);
-        hostInfo.addProperty("keyfile", keyfile);
-        hostInfo.addProperty("port", port);
+        JsonObject _HOSTINFO = new JsonObject();
+        _HOSTINFO.addProperty("_USERNAME", _USERNAME);
+        _HOSTINFO.addProperty("_HOST", _HOST);
+        _HOSTINFO.addProperty("_KEYFILE", _KEYFILE);
+        _HOSTINFO.addProperty("_PORT", _PORT);
 
-        List<String> commands = new ArrayList<String>();
-        commands.add("sudo su");
-        commands.add("ls -al");
+        List<String> _COMMANDS = new ArrayList<String>();
+        _COMMANDS.add("sudo su");
+        _COMMANDS.add("ls -al");
 
         SshUtil util = new SshUtil();
         try {
-            util.cmd(hostInfo, commands);
+            util.cmd(_HOSTINFO, _COMMANDS);
         } catch (Exception e) {
             e.printStackTrace();
         }

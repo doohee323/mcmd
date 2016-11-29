@@ -54,55 +54,55 @@ public class Mcmd {
         }
     }
 
-    public StringBuffer exec(String arg, JsonObject config, Map<String, Object> var) throws Exception {
+    public StringBuffer exec(String arg, JsonObject _CONFIG, Map<String, Object> var) throws Exception {
         try {
-            List<String> commands = new ArrayList<String>();
+            List<String> _COMMANDS = new ArrayList<String>();
 
             String path[] = arg.split("/");
             String mcmd1 = conf.get(path[0]).toString();
             JsonObject mcmd1Obj = gson.fromJson(mcmd1, JsonObject.class);
 
-            JsonObject hostInfo = gson.fromJson(mcmd1Obj.get("hostInfo").toString(), JsonObject.class);
+            JsonObject _HOSTINFO = gson.fromJson(mcmd1Obj.get("_HOSTINFO").toString(), JsonObject.class);
 
             String work = mcmd1Obj.get(path[1]).toString();
             JsonObject workObj = gson.fromJson(work, JsonObject.class);
 
-            String type = workObj.get("type").getAsString();
-            String commandstr1 = workObj.get("commands").toString();
+            String _TYPE = workObj.get("_TYPE").getAsString();
+            String commandstr1 = workObj.get("_COMMANDS").toString();
             JsonArray mCommand = gson.fromJson(commandstr1, JsonArray.class);
 
-            Map<String, Object> _hostInfo = new HashMap<String, Object>();
-            for (Map.Entry<String, JsonElement> entry : hostInfo.entrySet()) {
+            Map<String, Object> __HOSTINFO = new HashMap<String, Object>();
+            for (Map.Entry<String, JsonElement> entry : _HOSTINFO.entrySet()) {
                 String key = entry.getKey();
                 JsonElement v = entry.getValue();
-                _hostInfo.put(key, v.getAsString());
+                __HOSTINFO.put(key, v.getAsString());
             }
-            _hostInfo.put("_CURDIR", _CurDir);
+            __HOSTINFO.put("_CURDIR", _CurDir);
             for (int j = 0; j < mCommand.size(); j++) {
                 String cmd = mCommand.get(j).getAsString();
-                cmd = replaceVariables(cmd, _hostInfo);
+                cmd = replaceVariables(cmd, __HOSTINFO);
                 cmd = replaceVariables(cmd, var);
-                commands.add(cmd);
+                _COMMANDS.add(cmd);
             }
 
-            if (type.equals("ssh")) {
+            if (_TYPE.equals("ssh")) {
                 SshUtil util = new SshUtil();
-                if (config.has("maxWait")) {
-                    util.maxWait = config.get("maxWait").getAsInt();
+                if (_CONFIG.has("_MAXWAIT")) {
+                    util._MAXWAIT = _CONFIG.get("_MAXWAIT").getAsInt();
                 }
-                if (config.has("intervalBtw")) {
-                    util.intervalBtw = config.get("intervalBtw").getAsInt();
+                if (_CONFIG.has("_INTERVALBTW")) {
+                    util._INTERVALBTW = _CONFIG.get("_INTERVALBTW").getAsInt();
                 }
-                if (config.has("intervalWait")) {
-                    util.intervalWait = config.get("intervalWait").getAsInt();
+                if (_CONFIG.has("_INTERVALWAIT")) {
+                    util._INTERVALWAIT = _CONFIG.get("_INTERVALWAIT").getAsInt();
                 }
-                return util.cmd(hostInfo, commands);
-            } else if (type.equals("telnet")) {
+                return util.cmd(_HOSTINFO, _COMMANDS);
+            } else if (_TYPE.equals("telnet")) {
                 TelnetUtil util = new TelnetUtil();
                 util.cmd(null);
             } else { // shell
                 CmdUtil util = new CmdUtil();
-                return util.cmd(commands);
+                return util.cmd(_COMMANDS);
             }
         } catch (final Exception e) {
             e.printStackTrace();
@@ -113,9 +113,9 @@ public class Mcmd {
     }
 
     public StringBuffer exec(String path, Map<String, Object> var) throws Exception {
-        String configStr = conf.get("config").toString();
-        JsonObject config = gson.fromJson(configStr, JsonObject.class);
-        return exec(path, config, var);
+        String configStr = conf.get("_CONFIG").toString();
+        JsonObject _CONFIG = gson.fromJson(configStr, JsonObject.class);
+        return exec(path, _CONFIG, var);
     }
 
     public String replaceVariables(String orgStr, Map<String, Object> param) {
@@ -228,21 +228,21 @@ public class Mcmd {
             }
         } else {
             try {
-                JsonObject config = gson.fromJson(jsonStr, JsonObject.class);
+                JsonObject _CONFIG = gson.fromJson(jsonStr, JsonObject.class);
                 String parent = null;
                 JsonElement body = null;
                 String path = "";
-                for (Entry<String, JsonElement> e : config.entrySet()) {
+                for (Entry<String, JsonElement> e : _CONFIG.entrySet()) {
                     if (parent == null) {
                         parent = e.getKey();
-                        body = config.get(parent);
+                        body = _CONFIG.get(parent);
                     }
                 }
                 JsonObject config2 = gson.fromJson(body.toString(), JsonObject.class);
                 for (Entry<String, JsonElement> e : config2.entrySet()) {
-                    if (!e.getKey().equals("hostInfo")) {
+                    if (!e.getKey().equals("_HOSTINFO")) {
                         path = parent + "/" + e.getKey();
-                        mcmd.exec(path, config, var);
+                        mcmd.exec(path, _CONFIG, var);
                     }
                 }
             } catch (Exception e) {

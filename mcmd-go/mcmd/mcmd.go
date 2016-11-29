@@ -23,8 +23,8 @@ func main() {
 
 	var (
 		help = flag.Bool("help", false, "Show these options")
-		//		host        = flag.String("host", "topzone.biz", "host IP or CNAME")
-		//		port        = flag.Int("port", 22, "port")
+		//		_HOST        = flag.String("_HOST", "topzone.biz", "_PORT IP or CNAME")
+		//		port        = flag.Int("_PORT", 22, "port")
 		//		testtimeout = flag.Int("testtimeout", 540, "Timeout Sec to wait til cancel running test")
 		logfile  = flag.String("logfile", "STDOUT", "Logfile destination. STDOUT | STDERR or file path")
 		loglevel = flag.String("loglevel", "DEBUG", "Loglevel CRITICAL, ERROR, WARNING, NOTICE, INFO, DEBUG")
@@ -44,14 +44,14 @@ func main() {
 	log.Error(err)
 	log.Error(conf)
 
-	hostInfo := conf.getNode("hostInfo")
+	_HOSTINFO := conf.getNode("_HOSTINFO")
 
 	//	var sshConfig = &MakeConfig{
-	//		Server: hostInfo["host"],
-	//		Port:   hostInfo["port"],
-	//		User:   hostInfo["username"],
+	//		Server: _HOSTINFO["_HOST"],
+	//		_PORT:   _HOSTINFO["_PORT"],
+	//		User:   _HOSTINFO["_USERNAME"],
 	//		//	Password: "password",
-	//		Key:         hostInfo["keyfile"],
+	//		Key:         _HOSTINFO["_KEYFILE"],
 	//		Testtimeout: *testtimeout,
 	//	}
 	//
@@ -85,13 +85,13 @@ func main() {
 	//		}
 	//	}
 
-	publicKey, err := PublicKeyFile(hostInfo["keyfile"])
+	publicKey, err := PublicKeyFile(_HOSTINFO["_KEYFILE"])
 	if err != nil {
 		log.Error(err)
 	}
 
 	sshConfig := &ssh.ClientConfig{
-		User: hostInfo["username"],
+		User: _HOSTINFO["_USERNAME"],
 		Auth: []ssh.AuthMethod{
 			publicKey,
 		},
@@ -99,8 +99,8 @@ func main() {
 
 	client := &SSHClient{
 		Config: sshConfig,
-		Host:   hostInfo["host"],
-		Port:   22,
+		_HOST:   _HOSTINFO["_HOST"],
+		_PORT:   22,
 	}
 
 	commands := conf.getArry("work1/commands")

@@ -48,15 +48,15 @@ public class TelnetUtil {
             String authUseYn = input.get("authUseYn").getAsString();
             String userId = input.get("userId").getAsString();
             String password = input.get("password").getAsString();
-            String host = input.get("host").getAsString();
-            String port = input.get("port").getAsString();
+            String _HOST = input.get("_HOST").getAsString();
+            String _PORT = input.get("_PORT").getAsString();
             int nPort = 23;
-            if (!port.equals(""))
-                nPort = Integer.parseInt(port);
+            if (!_PORT.equals(""))
+                nPort = Integer.parseInt(_PORT);
             String command = input.get("command").getAsString();
 
             TelnetClient tn = new TelnetClient();
-            tn.connect(host, nPort);
+            tn.connect(_HOST, nPort);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(tn.getInputStream()));
             Writer writer = new PrintWriter(new OutputStreamWriter(tn.getOutputStream()), true);

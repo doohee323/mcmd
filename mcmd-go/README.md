@@ -20,14 +20,14 @@ You can define commands which you want to run sequentially.
 	
 	{
 	"mcmd1": {
-		"hostInfo": {
-			"host": "topzone.biz",
-			"port": 22,
-			"username": "ubuntu",
-			"keyfile": "/Users/dhong/.ssh/topzone_ca1.pem"
+		"_HOSTINFO": {
+			"_HOST": "topzone.biz",
+			"_PORT": 22,
+			"_USERNAME": "ubuntu",
+			"_KEYFILE": "/Users/dhong/.ssh/topzone_ca1.pem"
 		},
 		"work1": {
-			"commands": [
+			"_COMMANDS": [
 				"cd /home/ubuntu",
 				"rm -Rf {{filename}}.tar_bak",
 				"_SLEEP 10",					// wait 10 seconds
@@ -38,9 +38,9 @@ You can define commands which you want to run sequentially.
 			]
 		},
 		"work2": {
-			"type": "shell",
-			"commands": [
-				"scp -i {{keyfile}} {{username}}@{{host}}:/vagrant/{{filename}}.tar_bak ."
+			"_TYPE": "shell",
+			"_COMMANDS": [
+				"scp -i {{_KEYFILE}} {{_USERNAME}}@{{_HOST}}:/vagrant/{{filename}}.tar_bak ."
 			]
 		}
 	}

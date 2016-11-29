@@ -27,15 +27,15 @@ Depending on the predefined configuration file, you can run multiple commands in
 	   	-l "logback.xml"					// optional, logback file, default: /mcmd-java/src/main/resources/logback.xml
 	   	
 	   	-j {"kali_aws": {					// instead of using json file(mcmd.json), can define commands like this,
-		    "hostInfo": {
-		      "host": "54.183.204.226",
-		      "port": 22,
-		      "username": "ec2-user",
-		      "keyfile": "/Users/dhong/.ssh/topzone_ca1.pem"
+		    "_HOSTINFO": {
+		      "_HOST": "54.183.204.226",
+		      "_PORT": 22,
+		      "_USERNAME": "ec2-user",
+		      "_KEYFILE": "/Users/dhong/.ssh/topzone_ca1.pem"
 		    },
 		    "work1": {
-		      "type": "ssh",
-		      "commands": [
+		      "_TYPE": "ssh",
+		      "_COMMANDS": [
 		        "cd /opt/discover",
 		        "sudo bash discover.sh",
 		        "_WAIT 'Choice:'",
@@ -96,14 +96,14 @@ Depending on the predefined configuration file, you can run multiple commands in
 	
 	{
 	"mcmd1": {		// work group
-		"hostInfo": {
-			"host": "topzone.biz",
-			"port": 22,
-			"username": "ubuntu",
-			"keyfile": "/home/ubuntu/.ssh/topzone_ca1.pem"
+		"_HOSTINFO": {
+			"_HOST": "topzone.biz",
+			"_PORT": 22,
+			"_USERNAME": "ubuntu",
+			"_KEYFILE": "/home/ubuntu/.ssh/topzone_ca1.pem"
 		},
 		"work1": {	// work id
-			"commands": [
+			"_COMMANDS": [
 				"cd /home/ubuntu",
 				"rm -Rf {{filename}}.tar_bak",
 				"_SLEEP 10",					// wait 10 seconds
@@ -114,9 +114,9 @@ Depending on the predefined configuration file, you can run multiple commands in
 			]
 		},
 		"work2": {
-			"type": "shell",
-			"commands": [
-				"scp -i {{keyfile}} {{username}}@{{host}}:/vagrant/{{filename}}.tar_bak ."
+			"_TYPE": "shell",
+			"_COMMANDS": [
+				"scp -i {{_KEYFILE}} {{_USERNAME}}@{{_HOST}}:/vagrant/{{filename}}.tar_bak ."
 			]
 		}
 	}
